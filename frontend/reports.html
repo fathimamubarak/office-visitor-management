@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Reports | SmartOffice</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                🛡
+            </div>
+
+            <div>
+
+                <h2>
+                    SmartOffice
+                </h2>
+
+                <p>
+                    Office Security
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="sidebar-link"
+            >
+                <span>▦</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="visitor-registration.html"
+                class="sidebar-link"
+            >
+                <span>♙</span>
+                Register Visitor
+            </a>
+
+
+            <a
+                href="visitor-requests.html"
+                class="sidebar-link"
+            >
+                <span>▣</span>
+                Visitor Requests
+            </a>
+
+
+            <a
+                href="check-in.html"
+                class="sidebar-link"
+            >
+                <span>→</span>
+                Check-in
+            </a>
+
+
+            <a
+                href="check-out.html"
+                class="sidebar-link"
+            >
+                <span>←</span>
+                Check-out
+            </a>
+
+
+            <a
+                href="visitor-pass.html"
+                class="sidebar-link"
+            >
+                <span>▤</span>
+                Visitor Pass
+            </a>
+
+
+            <a
+                href="visitor-history.html"
+                class="sidebar-link"
+            >
+                <span>◴</span>
+                Visitor History
+            </a>
+
+        <a
+           href="reports.html"
+           class="sidebar-link"
+            onclick="window.location.href='reports.html'; return false;"
+>
+    <span>▥</span>
+    Reports
+</a>
+          
+
+
+        </nav>
+
+
+        <!-- LOGOUT -->
+
+        <div class="sidebar-bottom">
+
+            <button
+                type="button"
+                class="logout-btn"
+                onclick="logout()"
+            >
+                ◯
+                <span>Logout</span>
+            </button>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="dashboard-header">
+
+
+            <div class="dashboard-brand">
+
+                <strong>
+                    SmartOffice
+                </strong>
+
+
+                <div class="search-box">
+
+                    <span>
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        id="reportSearch"
+                        placeholder="Search visitors..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="header-actions">
+
+
+                <button
+                    type="button"
+                    class="header-btn primary"
+                    onclick="registerNewVisitor()"
+                >
+                    + Register Visitor
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-btn"
+                    onclick="goToCheckIn()"
+                >
+                    Check-in New
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-icon"
+                >
+                    ♧
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-icon"
+                >
+                    ⚙
+                </button>
+
+
+                <div class="profile-circle">
+                    SA
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =====================================================
+             CONTENT
+        ====================================================== -->
+
+        <section class="dashboard-content">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="welcome-section">
+
+                <div>
+
+                    <p class="welcome-small">
+                        VISITOR MANAGEMENT
+                    </p>
+
+
+                    <h1>
+                        Visitor Reports
+                    </h1>
+
+
+                    <p class="dashboard-date">
+                        View visitor activity and statistics
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="verify-btn"
+                    onclick="window.location.href='visitor-history.html'"
+                >
+                    View History
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 REPORT STATISTICS
+            ================================================== -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Total Visitors
+                        </span>
+
+                        <div class="stat-icon blue">
+                            ▣
+                        </div>
+
+                    </div>
+
+                    <strong id="totalVisitors">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Checked-In
+                        </span>
+
+                        <div class="stat-icon purple">
+                            →
+                        </div>
+
+                    </div>
+
+                    <strong id="reportCheckedIn">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Checked-Out
+                        </span>
+
+                        <div class="stat-icon blue">
+                            ←
+                        </div>
+
+                    </div>
+
+                    <strong id="reportCheckedOut">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Pending
+                        </span>
+
+                        <div class="stat-icon purple">
+                            ⌛
+                        </div>
+
+                    </div>
+
+                    <strong id="reportPending">
+                        0
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 REPORT TABLE
+            ================================================== -->
+
+            <div
+                class="dashboard-card visitors-card"
+                style="margin-top: 25px;"
+            >
+
+
+                <div class="card-header">
+
+                    <h2>
+                        Visitor Activity
+                    </h2>
+
+
+                    <button
+                        type="button"
+                        class="view-all-btn"
+                        onclick="loadReports()"
+                    >
+                        Refresh →
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="visitor-table"
+                    id="reportTable"
+                >
+
+
+                    <div class="visitor-row table-heading">
+
+                        <span>
+                            Visitor Name
+                        </span>
+
+                        <span>
+                            Host
+                        </span>
+
+                        <span>
+                            Purpose
+                        </span>
+
+                        <span>
+                            Date
+                        </span>
+
+                        <span>
+                            Status
+                        </span>
+
+                        <span>
+                            Phone
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            padding: 30px;
+                            text-align: center;
+                        "
+                    >
+                        Loading reports...
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- MAIN SCRIPT -->
+
+    <script src="script.js"></script>
+
+
+
+    <!-- REPORT SCRIPT -->
+
+    <script>
+
+        const REPORT_API =
+            "http://localhost:5000/api/visitors";
+
+
+        let reportVisitors = [];
+
+
+        async function loadReports() {
+
+            const table =
+                document.getElementById(
+                    "reportTable"
+                );
+
+
+            try {
+
+                const response =
+                    await fetch(REPORT_API);
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Failed to load reports"
+                    );
+
+                }
+
+
+                reportVisitors =
+                    await response.json();
+
+
+                updateReportStatistics(
+                    reportVisitors
+                );
+
+
+                renderReports(
+                    reportVisitors
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Reports error:",
+                    error
+                );
+
+
+                table.innerHTML = `
+
+                    <div
+                        style="
+                            padding:40px;
+                            text-align:center;
+                            color:#e74c3c;
+                        "
+                    >
+
+                        Unable to load reports.
+
+                        <br><br>
+
+                        Make sure the backend server
+                        is running.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+
+        function updateReportStatistics(
+            visitors
+        ) {
+
+            const total =
+                visitors.length;
+
+
+            const checkedIn =
+                visitors.filter(visitor =>
+                    visitor.status === "Checked-In"
+                ).length;
+
+
+            const checkedOut =
+                visitors.filter(visitor =>
+                    visitor.status === "Checked-Out"
+                ).length;
+
+
+            const pending =
+                visitors.filter(visitor =>
+                    visitor.status === "Pending"
+                ).length;
+
+
+            document.getElementById(
+                "totalVisitors"
+            ).textContent = total;
+
+
+            document.getElementById(
+                "reportCheckedIn"
+            ).textContent = checkedIn;
+
+
+            document.getElementById(
+                "reportCheckedOut"
+            ).textContent = checkedOut;
+
+
+            document.getElementById(
+                "reportPending"
+            ).textContent = pending;
+
+        }
+
+
+
+        function renderReports(
+            visitors
+        ) {
+
+            const table =
+                document.getElementById(
+                    "reportTable"
+                );
+
+
+            const header = `
+
+                <div class="visitor-row table-heading">
+
+                    <span>
+                        Visitor Name
+                    </span>
+
+                    <span>
+                        Host
+                    </span>
+
+                    <span>
+                        Purpose
+                    </span>
+
+                    <span>
+                        Date
+                    </span>
+
+                    <span>
+                        Status
+                    </span>
+
+                    <span>
+                        Phone
+                    </span>
+
+                </div>
+
+            `;
+
+
+            if (visitors.length === 0) {
+
+                table.innerHTML =
+                    header +
+                    `
+
+                    <div
+                        style="
+                            padding:40px;
+                            text-align:center;
+                            color:#888;
+                        "
+                    >
+
+                        No visitor records found.
+
+                    </div>
+
+                    `;
+
+                return;
+
+            }
+
+
+            const rows =
+                visitors.map(visitor => {
+
+                    const date =
+                        visitor.visitDate
+                            ? new Date(
+                                visitor.visitDate
+                              ).toLocaleDateString()
+                            : "--";
+
+
+                    return `
+
+                        <div class="visitor-row">
+
+                            <div class="visitor-name">
+
+                                <div class="avatar">
+                                    ${getInitials(visitor.name)}
+                                </div>
+
+                                <span>
+                                    ${escapeHtml(visitor.name)}
+                                </span>
+
+                            </div>
+
+
+                            <span>
+                                ${escapeHtml(
+                                    visitor.personToMeet || "--"
+                                )}
+                            </span>
+
+
+                            <span>
+                                ${escapeHtml(
+                                    visitor.purpose || "--"
+                                )}
+                            </span>
+
+
+                            <span>
+                                ${date}
+                            </span>
+
+
+                            <span>
+
+                                <span class="status ${getStatusClass(visitor.status)}">
+                                    ${escapeHtml(
+                                        visitor.status || "Pending"
+                                    )}
+                                </span>
+
+                            </span>
+
+
+                            <span>
+                                ${escapeHtml(
+                                    visitor.phone || "--"
+                                )}
+                            </span>
+
+                        </div>
+
+                    `;
+
+                }).join("");
+
+
+            table.innerHTML =
+                header + rows;
+
+        }
+
+
+
+        function getInitials(name) {
+
+            if (!name) {
+
+                return "--";
+
+            }
+
+
+            return name
+                .trim()
+                .split(/\s+/)
+                .slice(0, 2)
+                .map(word =>
+                    word
+                        .charAt(0)
+                        .toUpperCase()
+                )
+                .join("");
+
+        }
+
+
+
+        function getStatusClass(status) {
+
+            if (status === "Checked-In") {
+
+                return "checked-in";
+
+            }
+
+
+            if (status === "Checked-Out") {
+
+                return "checked-out";
+
+            }
+
+
+            if (status === "Approved") {
+
+                return "approved";
+
+            }
+
+
+            if (status === "Rejected") {
+
+                return "rejected";
+
+            }
+
+
+            return "pending";
+
+        }
+
+
+
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+
+                return "";
+
+            }
+
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                loadReports();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>SmartOffice Admin Dashboard</title>
+
+
+
+    <link rel="stylesheet" href="style.css">
+
+
+<style>
+.dashboard-live-visitors { width: 100%; }
+.dashboard-live-visitors .visitor-row { min-height: 76px; }
+.dashboard-visit-date, .traffic-count { display: block; font-size: 11px; opacity: .72; margin-top: 4px; }
+.dashboard-live-bars { display: flex; align-items: flex-end; justify-content: space-around; gap: 12px; height: 260px; width: 100%; }
+.dashboard-live-bars .bar-group { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; flex: 1; min-width: 0; }
+.dashboard-live-bars .bar { width: min(42px, 75%); min-height: 3px; background: #4b7893; border-radius: 3px 3px 0 0; }
+.dashboard-live-bars .bar-group.highlighted .bar { background: #57c9f4; }
+.dashboard-live-bars .bar-group > span { margin-top: 8px; font-size: 11px; white-space: nowrap; }
+</style>
+
+</head>
+
+
+
+<body class="dashboard-page">
+
+
+
+    <!-- =========================
+
+         SIDEBAR
+
+    ========================== -->
+
+    <aside class="sidebar">
+
+
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">🛡</div>
+
+
+
+            <div>
+
+                <h2>SmartOffice</h2>
+
+                <p>Office Security</p>
+
+            </div>
+
+        </div>
+
+
+
+
+
+        <nav class="sidebar-nav">
+
+
+
+            <!-- Dashboard -->
+
+            <a href="dashboard.html" class="sidebar-link active">
+
+                <span>▦</span>
+
+                Dashboard
+
+            </a>
+
+
+
+
+
+            <!-- Register Visitor -->
+
+            <a href="visitor-registration.html" class="sidebar-link">
+
+                <span>♙</span>
+
+                Register Visitor
+
+            </a>
+
+
+
+
+
+            <!-- Visitor Requests -->
+
+            <a href="visitor-requests.html" class="sidebar-link">
+
+                <span>▣</span>
+
+                Visitor Requests
+
+            </a>
+
+
+
+
+
+            <!-- Check-in -->
+
+            <a href="check-in.html" class="sidebar-link">
+
+                <span>→</span>
+
+                Check-in
+
+            </a>
+
+
+
+
+
+            <!-- Check-out -->
+
+            <a href="check-out.html" class="sidebar-link">
+
+                <span>←</span>
+
+                Check-out
+
+            </a>
+
+
+
+
+
+            <!-- Visitor Pass -->
+
+            <a href="visitor-pass.html" class="sidebar-link">
+
+                <span>▤</span>
+
+                Visitor Pass
+
+            </a>
+
+
+
+
+
+            <!-- Visitor History -->
+
+            <a href="visitor-history.html" class="sidebar-link">
+
+                <span>◴</span>
+
+                Visitor History
+
+            </a>
+
+
+
+
+
+            <!-- Reports -->
+
+            <a href="reports.html" class="sidebar-link">
+
+                <span>▥</span>
+
+                Reports
+
+            </a>
+
+
+
+        </nav>
+
+
+
+
+
+        <!-- Logout -->
+
+        <div class="sidebar-bottom">
+
+
+
+            <button
+
+                type="button"
+
+                class="logout-btn"
+
+                onclick="logout()"
+
+            >
+
+                ◯
+
+                <span>Logout</span>
+
+            </button>
+
+
+
+        </div>
+
+
+
+    </aside>
+
+
+
+
+
+
+
+    <!-- =========================
+
+         MAIN DASHBOARD
+
+    ========================== -->
+
+    <main class="dashboard-main">
+
+
+
+
+
+        <!-- =========================
+
+             HEADER
+
+        ========================== -->
+
+        <header class="dashboard-header">
+
+
+
+            <div class="dashboard-brand">
+
+
+
+                <strong>SmartOffice</strong>
+
+
+
+                <div class="search-box">
+
+                    <span>⌕</span>
+
+
+
+                    <input
+
+                        type="text"
+
+                        placeholder="Search visitors, hosts..."
+
+                    >
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="header-actions">
+
+
+
+                <!-- Register Visitor -->
+
+                <button
+
+                    type="button"
+
+                    class="header-btn primary"
+
+                    onclick="window.location.href='visitor-registration.html'"
+
+                >
+
+                    + Register Visitor
+
+                </button>
+
+
+
+
+
+                <!-- Check-in -->
+
+                <button
+
+                    type="button"
+
+                    class="header-btn"
+
+                    onclick="window.location.href='check-in.html'"
+
+                >
+
+                    Check-in New
+
+                </button>
+
+
+
+
+
+                <button
+
+                    type="button"
+
+                    class="header-icon"
+
+                >
+
+                    ♧
+
+                </button>
+
+
+
+
+
+                <button
+
+                    type="button"
+
+                    class="header-icon"
+
+                >
+
+                    ⚙
+
+                </button>
+
+
+
+
+
+                <div class="profile-circle">
+
+                    SA
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </header>
+
+
+
+
+
+
+
+        <!-- =========================
+
+             DASHBOARD CONTENT
+
+        ========================== -->
+
+        <section class="dashboard-content">
+
+
+
+
+
+            <!-- Welcome -->
+
+            <div class="welcome-section">
+
+
+
+                <div>
+
+
+
+                    <p class="welcome-small">
+
+                        Good Morning,
+
+                    </p>
+
+
+
+                    <h1>
+
+                        Receptionist
+
+                    </h1>
+
+
+
+                    <p class="dashboard-date">
+
+                        August 28, 2026
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+                <!-- Visitor Pass -->
+
+                <button
+
+                    type="button"
+
+                    class="verify-btn"
+
+                    onclick="window.location.href='visitor-pass.html'"
+
+                >
+
+                    ▣ Verify QR Pass
+
+                </button>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- =========================
+
+                 STATISTICS
+
+            ========================== -->
+
+            <div class="stats-grid">
+
+
+
+
+
+                <!-- Expected Visitors -->
+
+                <div class="stat-card">
+
+
+
+                    <div class="stat-top">
+
+
+
+                        <span>
+
+                            Expected Visitors
+
+                        </span>
+
+
+
+                        <div class="stat-icon blue">
+
+                            ▣
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <strong id="expectedCount">
+
+                        0
+
+                    </strong>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- Currently Inside -->
+
+                <div class="stat-card">
+
+
+
+                    <div class="stat-top">
+
+
+
+                        <span>
+
+                            Currently Inside
+
+                        </span>
+
+
+
+                        <div class="stat-icon purple">
+
+                            ◧
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <strong id="insideCount">
+
+                        0
+
+                    </strong>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- Checked Out -->
+
+                <div class="stat-card">
+
+
+
+                    <div class="stat-top">
+
+
+
+                        <span>
+
+                            Checked Out
+
+                        </span>
+
+
+
+                        <div class="stat-icon blue">
+
+                            ♟
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <strong id="checkedOutCount">
+
+                        0
+
+                    </strong>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- Pending -->
+
+                <div class="stat-card">
+
+
+
+                    <div class="stat-top">
+
+
+
+                        <span>
+
+                            Pending Approvals
+
+                        </span>
+
+
+
+                        <div class="stat-icon purple">
+
+                            ⌛
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <strong id="pendingCount">
+
+                        0
+
+                    </strong>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- =========================
+
+                 DASHBOARD GRID
+
+            ========================== -->
+
+            <div class="dashboard-grid">
+
+
+
+
+
+                <!-- =========================
+
+                     VISITOR TRAFFIC
+
+                ========================== -->
+
+                <div class="dashboard-card traffic-card">
+
+
+
+                    <div class="card-header">
+
+
+
+                        <h2>
+
+                            Visitor Traffic
+
+                        </h2>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="traffic-chart">
+
+
+
+                        <div class="chart-y-axis">
+
+
+
+                            <span>30</span>
+
+                            <span>20</span>
+
+                            <span>10</span>
+
+                            <span>0</span>
+
+
+
+                        </div>
+
+
+
+
+
+                        <div class="bars"><div id="trafficBars" class="dashboard-live-bars"></div>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- =========================
+
+                     TODAY'S VISITORS
+
+                ========================== -->
+
+                <div class="dashboard-card visitors-card">
+
+
+
+                    <div class="card-header">
+
+
+
+                        <h2>Recent Visitors</h2>
+
+
+
+
+
+                        <button
+
+                            type="button"
+
+                            class="view-all-btn"
+
+                            onclick="window.location.href='visitor-requests.html'"
+
+                        >
+
+                            View All →
+
+                        </button>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <div class="visitor-table">
+    <div class="visitor-row table-heading">
+        <span>Visitor Name</span><span>Host</span><span>Purpose</span>
+        <span>Time</span><span>Status</span><span>Action</span>
+    </div>
+    <div id="dashboardVisitors" class="dashboard-live-visitors">
+        <div class="visitor-row"><span>Loading real visitors…</span></div>
+    </div>
+</div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+            </div><!-- end dashboard-grid -->
+
+        </section>
+
+
+
+    </main>
+
+
+
+
+
+
+
+    <!-- =========================
+
+         JAVASCRIPT
+
+    ========================== -->
+
+    <script src="script.js"></script>
+
+
+
+
+
+    <script>
+(() => {
+    const DASHBOARD_API = "http://localhost:5000/api/visitors";
+
+    const safeText = (value) => String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[ch]));
+
+    const prettyDate = (value) => {
+        if (!value) return "Date not set";
+        const d = new Date(value);
+        return Number.isNaN(d.getTime()) ? "Date not set" :
+            d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+    };
+
+    const prettyTime = (value) => {
+        if (!value) return "Time not set";
+        const match = String(value).match(/^(\d{1,2}):(\d{2})/);
+        if (!match) return safeText(value);
+        let hour = Number(match[1]);
+        const minute = match[2];
+        const suffix = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        return `${hour}:${minute} ${suffix}`;
+    };
+
+    function renderVisitors(visitors) {
+        const container = document.getElementById("dashboardVisitors");
+        if (!container) return;
+
+        const latest = [...visitors]
+            .sort((a, b) => new Date(b.createdAt || b.visitDate || 0) - new Date(a.createdAt || a.visitDate || 0))
+            .slice(0, 6);
+
+        if (!latest.length) {
+            container.innerHTML = '<div class="visitor-row"><span>No visitor records found in MongoDB.</span></div>';
+            return;
+        }
+
+        container.innerHTML = latest.map(visitor => {
+            const status = String(visitor.status || "Pending");
+            const statusClass = status.toLowerCase().replace(/[^a-z]+/g, "-");
+            const name = visitor.name || "Unnamed visitor";
+            const initials = name.trim().split(/\s+/).slice(0, 2).map(part => part[0] || "").join("").toUpperCase();
+            const time = visitor.arrivalTime ? prettyTime(visitor.arrivalTime) : prettyDate(visitor.visitDate);
+            let action = "";
+            if (status === "Approved" || status === "Expected") {
+                action = '<button type="button" class="checkin-small" onclick="window.location.href=\'check-in.html\'">Check-in</button>';
+            } else {
+                action = '<button type="button" class="row-menu" onclick="window.location.href=\'visitor-history.html\'" aria-label="View visitor history">⋮</button>';
+            }
+            return `<div class="visitor-row">
+                <div class="visitor-name"><div class="avatar">${safeText(initials)}</div><span>${safeText(name)}</span></div>
+                <span>${safeText(visitor.personToMeet || "—")}</span>
+                <span>${safeText(visitor.purpose || "—")}</span>
+                <span>${safeText(time)}<small class="dashboard-visit-date">${safeText(prettyDate(visitor.visitDate))}</small></span>
+                <span><span class="status ${safeText(statusClass)}">${safeText(status)}</span></span>
+                ${action}
+            </div>`;
+        }).join("");
+    }
+
+    function renderTraffic(visitors) {
+        const bars = document.getElementById("trafficBars");
+        if (!bars) return;
+        const slots = [
+            { label: "9 AM", hour: 9 },
+            { label: "11 AM", hour: 11 },
+            { label: "1 PM", hour: 13 },
+            { label: "3 PM", hour: 15 },
+            { label: "5 PM", hour: 17 }
+        ];
+        const counts = slots.map(slot => visitors.filter(v => {
+            const time = String(v.arrivalTime || "");
+            const m = time.match(/^(\d{1,2}):(\d{2})/);
+            return m && Number(m[1]) === slot.hour;
+        }).length);
+        const max = Math.max(1, ...counts);
+        bars.innerHTML = slots.map((slot, i) => {
+            const height = counts[i] === 0 ? 3 : Math.max(8, Math.round(counts[i] / max * 100));
+            return `<div class="bar-group ${i === counts.indexOf(max === 1 ? -1 : Math.max(...counts)) ? "highlighted" : ""}">
+                <div class="bar" style="height:${height}%;" title="${counts[i]} visitor(s)"></div>
+                <span>${slot.label}</span>
+                <small class="traffic-count">${counts[i]}</small>
+            </div>`;
+        }).join("");
+    }
+
+    async function loadDashboardData() {
+        const container = document.getElementById("dashboardVisitors");
+        try {
+            const response = await fetch(DASHBOARD_API, { cache: "no-store" });
+            if (!response.ok) throw new Error(`API returned HTTP ${response.status}`);
+            const data = await response.json();
+            if (!Array.isArray(data)) throw new Error("Visitors API did not return a list");
+
+            const visitors = data;
+            const expected = visitors.filter(v => ["Pending", "Approved", "Expected"].includes(v.status)).length;
+            const inside = visitors.filter(v => v.status === "Checked-In").length;
+            const checkedOut = visitors.filter(v => v.status === "Checked-Out").length;
+            const pending = visitors.filter(v => v.status === "Pending").length;
+
+            const set = (id, value) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value;
+            };
+            set("expectedCount", expected);
+            set("insideCount", inside);
+            set("checkedOutCount", checkedOut);
+            set("pendingCount", pending);
+
+            renderVisitors(visitors);
+            renderTraffic(visitors);
+        } catch (error) {
+            console.error("Dashboard error:", error);
+            if (container) {
+                container.innerHTML = '<div class="visitor-row"><span>Could not load live visitors. Check that the backend is running at localhost:5000.</span></div>';
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadDashboardData);
+})();
+</script>
+
+
+
+</body>
+
+</html>

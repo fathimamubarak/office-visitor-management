@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Staff Login | SmartOffice</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-page">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            SmartOffice
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#features">Features</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+
+        <button class="login-btn active-login">
+            LOGIN
+        </button>
+
+    </nav>
+
+
+    <!-- LOGIN SECTION -->
+    <main class="login-container">
+
+        <div class="login-header">
+
+            <p class="eyebrow">
+                STAFF ACCESS
+            </p>
+
+            <h1>
+                Welcome <span>Back</span>
+            </h1>
+
+            <p>
+                Sign in to manage office visitors
+                and access requests.
+            </p>
+
+        </div>
+
+
+        <div class="login-card">
+
+            <form id="loginForm">
+
+                <!-- EMAIL -->
+                <div class="form-group">
+
+                    <label for="email">
+                        Work Email
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">✉</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your work email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()"
+                            aria-label="Show password"
+                        >
+                            ◉
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+                <div class="login-options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+                    <a href="#" onclick="forgotPassword(event)">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+                <button
+                    type="submit"
+                    class="login-submit"
+                >
+                    LOGIN
+                    <span>→</span>
+                </button>
+
+
+                <!-- MESSAGE -->
+                <p
+                    id="loginMessage"
+                    class="login-message"
+                ></p>
+
+
+                <!-- HELP -->
+                <div class="login-help">
+
+                    <p>
+                        Don't have an account?
+                    </p>
+
+                    <a
+                        href="#"
+                        onclick="contactAdministrator(event)"
+                    >
+                        Contact your administrator
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- SECURITY -->
+        <div class="secure-access">
+
+            <div class="secure-icon">
+                ✓
+            </div>
+
+            <div>
+                <strong>
+                    SECURE STAFF ACCESS
+                </strong>
+
+                <p>
+                    Protected office management system
+                </p>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div class="footer-logo">
+            SMARTOFFICE
+        </div>
+
+        <div class="footer-links">
+
+            <a href="#">
+                Secure Records
+            </a>
+
+            <a href="#">
+                Employee Approval
+            </a>
+
+            <a href="#">
+                QR Visitor Pass
+            </a>
+
+        </div>
+
+        <p>
+            © 2026 SmartOffice. Secure Visitor Management.
+        </p>
+
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

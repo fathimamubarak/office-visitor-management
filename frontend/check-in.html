@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Visitor Check-in | SmartOffice</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                🛡
+            </div>
+
+            <div>
+
+                <h2>
+                    SmartOffice
+                </h2>
+
+                <p>
+                    Office Security
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="dashboard.html"
+                class="sidebar-link"
+            >
+                <span>▦</span>
+                Dashboard
+            </a>
+
+
+            <!-- REGISTER VISITOR -->
+
+            <a
+                href="visitor-registration.html"
+                class="sidebar-link"
+            >
+                <span>♙</span>
+                Register Visitor
+            </a>
+
+
+            <!-- VISITOR REQUESTS -->
+
+            <a
+                href="visitor-requests.html"
+                class="sidebar-link"
+            >
+                <span>▣</span>
+                Visitor Requests
+            </a>
+
+
+            <!-- CHECK-IN - ACTIVE -->
+
+            <a
+                href="check-in.html"
+                class="sidebar-link active"
+            >
+                <span>→</span>
+                Check-in
+            </a>
+
+
+            <!-- CHECK-OUT -->
+
+            <a
+                href="check-out.html"
+                class="sidebar-link"
+            >
+                <span>←</span>
+                Check-out
+            </a>
+
+
+            <!-- VISITOR PASS -->
+
+            <a
+                href="visitor-pass.html"
+                class="sidebar-link"
+            >
+                <span>▤</span>
+                Visitor Pass
+            </a>
+
+
+            <!-- VISITOR HISTORY -->
+
+            <a
+                href="visitor-history.html"
+                class="sidebar-link"
+            >
+                <span>◷</span>
+                Visitor History
+            </a>
+
+
+            <!-- REPORTS -->
+
+            <a
+                href="reports.html"
+                class="sidebar-link"
+            >
+                <span>▥</span>
+                Reports
+            </a>
+
+
+        </nav>
+
+
+
+        <!-- LOGOUT -->
+
+        <div class="sidebar-bottom">
+
+
+            <a
+                href="staff-login.html"
+                class="logout-link"
+            >
+                ◯ &nbsp; Logout
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="checkin-main">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="dashboard-topbar">
+
+
+            <div class="topbar-title">
+
+                <strong>
+                    SmartOffice
+                </strong>
+
+                <span>
+                    Visitor Management
+                </span>
+
+            </div>
+
+
+
+            <div class="topbar-search">
+
+                🔍
+
+                <input
+                    type="text"
+                    id="checkinSearch"
+                    placeholder="Search visitor..."
+                >
+
+            </div>
+
+
+
+            <div class="topbar-actions">
+
+                <span>
+                    Support
+                </span>
+
+                <span>
+                    ♧
+                </span>
+
+                <span>
+                    ⚙
+                </span>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <section class="checkin-heading">
+
+
+            <div>
+
+                <p class="page-label">
+                    VISITOR MANAGEMENT
+                </p>
+
+
+                <h1>
+                    Visitor Check-in
+                </h1>
+
+
+                <p>
+                    Verify an approved visitor and record their arrival.
+                </p>
+
+            </div>
+
+
+
+            <div class="checkin-status">
+
+                <span class="status-dot"></span>
+
+                Reception Desk Active
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CHECK-IN AREA
+        ================================================== -->
+
+        <section class="checkin-layout">
+
+
+            <!-- SEARCH / VISITOR CARD -->
+
+            <div class="checkin-card">
+
+
+                <div class="checkin-card-header">
+
+
+                    <div>
+
+                        <h2>
+                            Find Visitor
+                        </h2>
+
+
+                        <p>
+                            Search by visitor name or phone number.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- SEARCH -->
+
+                <div class="visitor-search-box">
+
+
+                    <span>
+                        🔍
+                    </span>
+
+
+                    <input
+                        type="text"
+                        id="visitorSearchInput"
+                        placeholder="Enter visitor name or phone number"
+                    >
+
+
+                    <button
+                        type="button"
+                        onclick="searchVisitor()"
+                    >
+                        Search
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- SELECTED VISITOR -->
+
+                <div class="selected-visitor" id="selectedVisitorCard">
+
+
+                    <div class="visitor-avatar" id="checkinAvatar">
+                        --
+                    </div>
+
+
+                    <div class="visitor-details">
+
+
+                        <h3 id="checkinVisitorName">
+                            No visitor selected
+                        </h3>
+
+
+                        <p id="checkinVisitorStatus">
+                            Search for an approved visitor to continue.
+                        </p>
+
+
+                    </div>
+
+
+                    <span class="approval-badge" id="checkinStatusBadge">
+                        Approved
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- DETAILS -->
+
+                <div class="visitor-information">
+
+
+                    <div>
+
+                        <span>
+                            Phone
+                        </span>
+
+                        <strong id="checkinPhone">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Person to Meet
+                        </span>
+
+                        <strong id="checkinHost">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Purpose
+                        </span>
+
+                        <strong id="checkinPurpose">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Expected Time
+                        </span>
+
+                        <strong id="checkinTime">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- CHECK IN BUTTON -->
+
+                <button
+                    type="button"
+                    class="confirm-checkin-btn"
+                    onclick="confirmCheckIn()"
+                >
+                    ✓ Confirm Visitor Check-in
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QR SCANNER CARD
+            ================================================== -->
+
+            <div class="scanner-card">
+
+
+                <div class="scanner-header">
+
+
+                    <h2>
+                        Verify QR Pass
+                    </h2>
+
+
+                    <p>
+                        Scan the visitor's digital pass.
+                    </p>
+
+
+                </div>
+
+
+
+                <div class="qr-scanner">
+
+
+                    <div class="scanner-corners">
+
+
+                        <span class="corner top-left"></span>
+
+                        <span class="corner top-right"></span>
+
+                        <span class="corner bottom-left"></span>
+
+                        <span class="corner bottom-right"></span>
+
+
+                    </div>
+
+
+                    <div class="scanner-icon">
+                        ▦
+                    </div>
+
+
+                    <p>
+                        Scan QR Code
+                    </p>
+
+
+                    <small>
+                        Position the visitor pass inside the frame.
+                    </small>
+
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="manual-checkin-btn"
+                    onclick="enterPassIdManually()"
+                >
+                    Enter Pass ID Manually
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             TODAY'S ARRIVALS
+        ================================================== -->
+
+        <section class="arrivals-card">
+
+
+            <div class="arrivals-header">
+
+
+                <div>
+
+
+                    <h2>
+                        Today's Expected Visitors
+                    </h2>
+
+
+                    <p>
+                        Visitors scheduled to arrive today.
+                    </p>
+
+
+                </div>
+
+
+                <span class="arrival-count" id="arrivalCount">
+                    0 Expected
+                </span>
+
+
+            </div>
+
+
+
+            <div class="arrival-empty" id="arrivalList">
+
+                <div class="empty-icon">
+                    ◷
+                </div>
+
+                <h3>
+                    Loading approved visitors...
+                </h3>
+
+                <p>
+                    Approved visitors scheduled to arrive will appear here.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         PAGE SCRIPT
+         REAL MONGODB CHECK-IN
+    ====================================================== -->
+
+    <script>
+
+        const CHECKIN_API = "http://localhost:5000/api/visitors";
+        let approvedVisitors = [];
+        let selectedCheckinVisitor = null;
+
+        function escapeCheckin(value) {
+            const div = document.createElement("div");
+            div.textContent = value == null ? "" : String(value);
+            return div.innerHTML;
+        }
+
+        function getInitials(name) {
+            return String(name || "Visitor")
+                .trim()
+                .split(/\s+/)
+                .slice(0, 2)
+                .map(part => part[0])
+                .join("")
+                .toUpperCase();
+        }
+
+        function formatExpectedTime(visitor) {
+            return visitor.arrivalTime || "—";
+        }
+
+        function renderSelectedVisitor(visitor) {
+            selectedCheckinVisitor = visitor;
+
+            document.getElementById("checkinAvatar").textContent = getInitials(visitor.name);
+            document.getElementById("checkinVisitorName").textContent = visitor.name || "—";
+            document.getElementById("checkinVisitorStatus").textContent = "Approved visitor ready for check-in.";
+            document.getElementById("checkinStatusBadge").textContent = visitor.status || "Approved";
+            document.getElementById("checkinPhone").textContent = visitor.phone || "—";
+            document.getElementById("checkinHost").textContent = visitor.personToMeet || "—";
+            document.getElementById("checkinPurpose").textContent = visitor.purpose || "—";
+            document.getElementById("checkinTime").textContent = formatExpectedTime(visitor);
+        }
+
+        function renderArrivals(visitors) {
+            const count = document.getElementById("arrivalCount");
+            const list = document.getElementById("arrivalList");
+            count.textContent = `${visitors.length} Expected`;
+
+            if (!visitors.length) {
+                list.innerHTML = `
+                    <div class="empty-icon">◷</div>
+                    <h3>No approved visitors</h3>
+                    <p>Approved visitors will appear here when they are available.</p>
+                `;
+                return;
+            }
+
+            list.innerHTML = visitors.map(visitor => `
+                <div style="padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer"
+                     onclick="selectApprovedVisitor('${visitor._id}')">
+                    <strong>${escapeCheckin(visitor.name)}</strong>
+                    <div style="font-size:12px;margin-top:4px;opacity:.7">
+                        ${escapeCheckin(visitor.personToMeet || "")} · ${escapeCheckin(visitor.arrivalTime || "")}
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function selectApprovedVisitor(visitorId) {
+            const visitor = approvedVisitors.find(v => v._id === visitorId);
+            if (visitor) renderSelectedVisitor(visitor);
+        }
+
+        async function loadApprovedVisitors() {
+            try {
+                const response = await fetch(CHECKIN_API);
+                if (!response.ok) throw new Error("Failed to load visitors");
+                const visitors = await response.json();
+                approvedVisitors = visitors.filter(visitor => visitor.status === "Approved");
+                renderArrivals(approvedVisitors);
+            } catch (error) {
+                console.error("Check-in loading error:", error);
+                document.getElementById("arrivalList").innerHTML = `
+                    <div class="empty-icon">!</div>
+                    <h3>Unable to load visitors</h3>
+                    <p>Make sure the backend server is running on port 5000.</p>
+                `;
+            }
+        }
+
+        function searchVisitor() {
+            const query = document.getElementById("visitorSearchInput").value.trim().toLowerCase();
+            if (!query) {
+                alert("Enter a visitor name or phone number.");
+                return;
+            }
+
+            const visitor = approvedVisitors.find(v =>
+                String(v.name || "").toLowerCase().includes(query) ||
+                String(v.phone || "").toLowerCase().includes(query)
+            );
+
+            if (!visitor) {
+                alert("No approved visitor found for that search.");
+                return;
+            }
+
+            renderSelectedVisitor(visitor);
+        }
+
+        async function confirmCheckIn() {
+            if (!selectedCheckinVisitor) {
+                alert("Please search for and select an approved visitor first.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${CHECKIN_API}/${selectedCheckinVisitor._id}/checkin`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" }
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || "Check-in failed");
+
+                alert(`${selectedCheckinVisitor.name} checked in successfully!`);
+                selectedCheckinVisitor = null;
+                document.getElementById("checkinVisitorName").textContent = "No visitor selected";
+                document.getElementById("checkinVisitorStatus").textContent = "Search for an approved visitor to continue.";
+                document.getElementById("checkinAvatar").textContent = "--";
+                document.getElementById("checkinPhone").textContent = "—";
+                document.getElementById("checkinHost").textContent = "—";
+                document.getElementById("checkinPurpose").textContent = "—";
+                document.getElementById("checkinTime").textContent = "—";
+                await loadApprovedVisitors();
+            } catch (error) {
+                console.error("Check-in error:", error);
+                alert(error.message || "Failed to check in visitor.");
+            }
+        }
+
+        async function enterPassIdManually() {
+            const passId = prompt("Enter Visitor Pass ID (for example VIS-2026-XXXX):");
+            if (!passId) return;
+
+            const normalized = passId.trim().toUpperCase();
+            let visitor = approvedVisitors.find(v => {
+                const year = new Date(v.createdAt || Date.now()).getFullYear();
+                const shortId = String(v._id).slice(-4).toUpperCase();
+                return `VIS-${year}-${shortId}` === normalized;
+            });
+
+            if (!visitor && normalized.startsWith("SMARTOFFICE-")) {
+                const mongoId = normalized.replace("SMARTOFFICE-", "");
+                visitor = approvedVisitors.find(v => String(v._id).toUpperCase() === mongoId);
+            }
+
+            if (!visitor) {
+                alert("Approved visitor not found for that Pass ID.");
+                return;
+            }
+
+            renderSelectedVisitor(visitor);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadApprovedVisitors();
+            document.getElementById("visitorSearchInput")?.addEventListener("keydown", event => {
+                if (event.key === "Enter") searchVisitor();
+            });
+        });
+
+    </script>
+
+
+
+    <!-- COMMON SMARTOFFICE SCRIPT -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>

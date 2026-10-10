@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register Your Visit | SmartOffice</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="registration-page">
+
+    <!-- NAVBAR -->
+    <header class="registration-navbar">
+
+        <div class="registration-logo">
+            SmartOffice
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">Features</a>
+            <a href="#" class="nav-active">Contact</a>
+        </nav>
+
+        <a href="staff-login.html" class="login-button">
+            LOGIN
+        </a>
+
+    </header>
+
+
+    <!-- PAGE HEADER -->
+    <section class="registration-header">
+
+        <p class="registration-label">
+            VISITOR ACCESS
+        </p>
+
+        <h1>
+            Register Your Visit
+        </h1>
+
+        <div class="header-glow"></div>
+
+    </section>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="registration-container">
+
+        <!-- FORM CARD -->
+        <section class="registration-form-card">
+
+            <form id="visitorRegistrationForm">
+
+                <!-- ROW 1 -->
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="visitorName">
+                            Full Name
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span>♙</span>
+
+                            <input
+                                type="text"
+                                id="visitorName"
+                                name="name"
+                                placeholder="Enter your full name"
+                                required
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="visitorPhone">
+                            Phone Number
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span>⌕</span>
+
+                            <input
+                                type="tel"
+                                id="visitorPhone"
+                                name="phone"
+                                placeholder="Enter your phone number"
+                                required
+                            >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+                <div class="form-group">
+
+                    <label for="visitorEmail">
+                        Email Address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span>✉</span>
+
+                        <input
+                            type="email"
+                            id="visitorEmail"
+                            name="email"
+                            placeholder="Enter your email address"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PERSON TO MEET -->
+                <div class="form-group">
+
+                    <label for="personToMeet">
+                        Person to Meet
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span>♙</span>
+
+                        <input
+                            type="text"
+                            id="personToMeet"
+                            name="personToMeet"
+                            placeholder="Select or enter employee name"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PURPOSE -->
+                <div class="form-group">
+
+                    <label for="purpose">
+                        Purpose of Visit
+                    </label>
+
+                    <div class="textarea-wrapper">
+
+                        <span>☷</span>
+
+                        <textarea
+                            id="purpose"
+                            name="purpose"
+                            placeholder="Why are you visiting?"
+                            required
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DATE + TIME -->
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="visitDate">
+                            Visit Date
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>▣</span>
+
+                            <input
+                                type="date"
+                                id="visitDate"
+                                name="visitDate"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="arrivalTime">
+                            Expected Arrival Time
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>◷</span>
+
+                            <input
+                                type="time"
+                                id="arrivalTime"
+                                name="arrivalTime"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTTOM FORM AREA -->
+                <div class="registration-submit-area">
+
+                    <div class="security-message">
+
+                        <span>♙</span>
+
+                        <p>
+                            Your information is securely stored<br>
+                            and used only for visitor management.
+                        </p>
+
+                    </div>
+
+
+                    <div class="submit-section">
+
+                        <button
+                            type="submit"
+                            class="submit-visit-btn"
+                        >
+                            SUBMIT VISIT REQUEST
+                            <span>→</span>
+                        </button>
+
+                        <a
+                            href="#"
+                            class="visitor-status-link"
+                        >
+                            Already registered? Check your visitor status
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- RIGHT PROCESS CARD -->
+        <aside class="registration-process-card">
+
+            <h3>
+                ⓘ &nbsp; What happens next?
+            </h3>
+
+
+            <div class="process-line"></div>
+
+
+            <!-- STEP 1 -->
+            <div class="process-step active">
+
+                <div class="step-circle">
+                    01
+                </div>
+
+                <div class="step-content">
+
+                    <h4>
+                        Submit Request
+                    </h4>
+
+                    <p>
+                        Visitor details are securely submitted.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 2 -->
+            <div class="process-step">
+
+                <div class="step-circle">
+                    02
+                </div>
+
+                <div class="step-content">
+
+                    <h4>
+                        Employee Approval
+                    </h4>
+
+                    <p>
+                        The host reviews and approves the visit.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 3 -->
+            <div class="process-step">
+
+                <div class="step-circle">
+                    03
+                </div>
+
+                <div class="step-content">
+
+                    <h4>
+                        Receive QR Pass
+                    </h4>
+
+                    <p>
+                        A digital visitor pass is generated.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 4 -->
+            <div class="process-step">
+
+                <div class="step-circle">
+                    04
+                </div>
+
+                <div class="step-content">
+
+                    <h4>
+                        Check In
+                    </h4>
+
+                    <p>
+                        Scan the QR pass at the office entrance.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- QR PLACEHOLDER -->
+            <div class="qr-area">
+
+                <div class="qr-box">
+                    ▦
+                </div>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+
+    <!-- SECURITY BANNER -->
+    <section class="security-banner">
+
+        <div class="security-banner-icon">
+            ♙
+        </div>
+
+        <div class="security-banner-text">
+
+            <strong>
+                Secure Visitor Management
+            </strong>
+
+            <p>
+                Your visitor information is protected with secure digital records.
+            </p>
+
+        </div>
+
+
+        <div class="security-features">
+
+            <div>
+                <strong>▱</strong>
+                <small>SECURE RECORDS</small>
+            </div>
+
+            <div>
+                <strong>♙</strong>
+                <small>EMPLOYEE APPROVAL</small>
+            </div>
+
+            <div>
+                <strong>▦</strong>
+                <small>QR VISITOR PASS</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="registration-footer">
+
+        <strong>
+            SMARTOFFICE
+        </strong>
+
+        <div>
+            Secure Records
+        </div>
+
+        <div>
+            Employee Approval
+        </div>
+
+        <div>
+            QR Visitor Pass
+        </div>
+
+        <span>
+            © 2026 SmartOffice Visitor Management.
+        </span>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

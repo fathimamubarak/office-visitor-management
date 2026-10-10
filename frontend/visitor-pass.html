@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Visitor Pass | SmartOffice</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+    <style>
+
+        /* =====================================================
+           VISITOR PASS
+           Uses the same SmartOffice dashboard typography
+        ===================================================== */
+
+        .visitor-pass-content {
+            width: 100%;
+        }
+
+
+        .visitor-pass-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(280px, 0.8fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+
+        /* =====================================================
+           PASS CARD
+        ===================================================== */
+
+        .visitor-pass-card {
+            padding: 20px;
+        }
+
+
+        .pass-status-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+
+        .approved-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 15px;
+            border-radius: 20px;
+
+            background: rgba(24, 203, 137, 0.12);
+            border: 1px solid #18c889;
+
+            color: #35e3a2;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        .pass-id {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 8px 15px;
+
+            border-radius: 20px;
+
+            background: rgba(30, 75, 112, 0.35);
+            border: 1px solid #24557a;
+
+            color: #75c8ed;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PASS DOCUMENT
+        ===================================================== */
+
+        .pass-document {
+            overflow: hidden;
+
+            border: 1px solid #1d648d;
+            border-radius: 14px;
+
+            background:
+                radial-gradient(
+                    circle at 85% 0%,
+                    rgba(37, 148, 215, 0.12),
+                    transparent 32%
+                ),
+                #071a2c;
+        }
+
+
+        /* =====================================================
+           PASS HEADER
+        ===================================================== */
+
+        .pass-header {
+            min-height: 90px;
+
+            padding: 20px 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            border-bottom: 1px solid #19405d;
+        }
+
+
+        .pass-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .pass-logo-icon {
+            width: 44px;
+            height: 44px;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #0e4e78;
+
+            color: #68d9ff;
+
+            font-size: 19px;
+        }
+
+
+        .pass-logo-title {
+            color: #55d2ff;
+
+            font-size: 18px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+
+        .pass-logo-subtitle {
+            margin-top: 3px;
+
+            color: #62b9db;
+
+            font-size: 10px;
+
+            letter-spacing: 4px;
+        }
+
+
+        .pass-tagline {
+            text-align: right;
+
+            color: #66cdef;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           PASS BODY
+        ===================================================== */
+
+        .pass-body {
+            padding: 24px;
+        }
+
+
+        .visitor-main-info {
+            display: grid;
+
+            grid-template-columns: 1fr 135px;
+
+            align-items: center;
+
+            gap: 24px;
+
+            padding-bottom: 22px;
+
+            border-bottom: 1px solid #173950;
+        }
+
+
+        .visitor-name-area {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+
+        .visitor-icon {
+            width: 48px;
+            height: 48px;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+
+            background: #103855;
+
+            color: #55d2ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+
+        .visitor-label {
+            margin-bottom: 4px;
+
+            color: #789bb4;
+
+            font-size: 12px;
+        }
+
+
+        .visitor-name {
+            color: #f0f6fb;
+
+            font-size: 19px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           QR CODE
+        ===================================================== */
+
+        .qr-area {
+            width: 135px;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+        }
+
+
+        #qrcode {
+            width: 106px !important;
+            height: 106px !important;
+
+            padding: 6px !important;
+
+            box-sizing: content-box !important;
+
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+
+            margin: 0 auto !important;
+
+            background: white;
+        }
+
+
+        #qrcode img {
+            width: 106px !important;
+            height: 106px !important;
+
+            display: block !important;
+
+            margin: 0 !important;
+        }
+
+
+        .qr-label {
+            margin-top: 8px;
+
+            color: #a7bfd1;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           VISITOR SELECTOR
+        ===================================================== */
+        .visitor-selector-card {
+            margin-bottom: 18px;
+            padding: 16px 18px;
+        }
+
+        .visitor-selector-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #a7bfd1;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        #visitorSelector {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid #28445c;
+            border-radius: 8px;
+            background: #0b1624;
+            color: #ffffff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        #visitorSelector:focus {
+            border-color: #39bdf8;
+        }
+
+        .visitor-selector-help {
+            margin-top: 7px;
+            color: #7891a6;
+            font-size: 11px;
+        }
+
+        .qr-error {
+            width: 106px;
+            min-height: 106px;
+            padding: 8px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: #ffffff;
+            color: #b42318;
+            font-size: 10px;
+            border-radius: 4px;
+        }
+
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .pass-details {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 22px 35px;
+
+            padding: 24px 0;
+        }
+
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+        }
+
+
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            background: #0c3653;
+
+            border: 1px solid #14557d;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #54d1ff;
+
+            font-size: 14px;
+        }
+
+
+        .detail-label {
+            margin-bottom: 3px;
+
+            color: #789bb5;
+
+            font-size: 12px;
+        }
+
+
+        .detail-value {
+            color: #dceaf5;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           PASS FOOTER
+        ===================================================== */
+
+        .pass-footer {
+            min-height: 52px;
+
+            padding: 0 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            border-top: 1px solid #19405d;
+
+            color: #55d1ff;
+
+            font-size: 12px;
+        }
+
+
+        .pass-footer i {
+            margin-right: 6px;
+        }
+
+
+        .pass-footer-right {
+            color: #75bdd7;
+
+            font-style: italic;
+        }
+
+
+        /* =====================================================
+           INSTRUCTIONS
+        ===================================================== */
+
+        .instructions-card {
+            margin-top: 18px;
+
+            padding: 20px;
+        }
+
+
+        .instructions-card h3 {
+            margin: 0 0 12px;
+
+            color: #59d2ff;
+
+            font-size: 15px;
+        }
+
+
+        .instructions-card h3 i {
+            margin-right: 8px;
+        }
+
+
+        .instructions-card ul {
+            margin: 0;
+
+            padding-left: 18px;
+
+            color: #93aabe;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           RIGHT COLUMN
+        ===================================================== */
+
+        .pass-right-column {
+            display: flex;
+            flex-direction: column;
+
+            gap: 18px;
+        }
+
+
+        .pass-side-card {
+            padding: 20px;
+        }
+
+
+        .pass-side-card h2 {
+            margin: 0 0 17px;
+
+            color: #e8f2fa;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           ACTION BUTTONS
+        ===================================================== */
+
+        .pass-action-btn {
+            width: 100%;
+
+            min-height: 60px;
+
+            margin-bottom: 10px;
+
+            padding: 10px 14px;
+
+            border: 1px solid #1a6997;
+
+            border-radius: 10px;
+
+            background: #0c2740;
+
+            color: #62d5ff;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            text-align: left;
+
+            transition: 0.2s ease;
+        }
+
+
+        .pass-action-btn:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .pass-action-btn:hover {
+            background: #123855;
+
+            border-color: #3cc8ff;
+
+            transform: translateY(-1px);
+        }
+
+
+        .pass-action-btn i {
+            width: 25px;
+
+            text-align: center;
+
+            font-size: 18px;
+        }
+
+
+        .action-title {
+            display: block;
+
+            margin-bottom: 3px;
+
+            font-size: 13px;
+        }
+
+
+        .action-subtitle {
+            display: block;
+
+            color: #7592a8;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           VISITOR DETAILS SIDE
+        ===================================================== */
+
+        .side-detail {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .side-detail:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .side-detail-icon {
+            width: 37px;
+            height: 37px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: #0d2e49;
+
+            color: #55d2ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+        }
+
+
+        .side-detail-label {
+            margin-bottom: 3px;
+
+            color: #78a0bb;
+
+            font-size: 11px;
+        }
+
+
+        .side-detail-value {
+            color: #dbe9f3;
+
+            font-size: 13px;
+
+            line-height: 1.35;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .visitor-pass-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pass-right-column {
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .visitor-pass-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pass-right-column {
+                display: flex;
+            }
+
+            .visitor-main-info {
+                grid-template-columns: 1fr;
+            }
+
+            .qr-area {
+                margin: 0 auto;
+            }
+
+            .pass-details {
+                grid-template-columns: 1fr;
+            }
+
+            .pass-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .pass-tagline {
+                text-align: left;
+            }
+
+            .pass-footer {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                padding: 14px 20px;
+            }
+
+        }
+
+
+        /* =====================================================
+           PRINT
+        ===================================================== */
+
+        @media print {
+
+            body {
+                background: white !important;
+            }
+
+            .sidebar,
+            .dashboard-header,
+            .welcome-section,
+            .pass-right-column,
+            .instructions-card {
+                display: none !important;
+            }
+
+            .dashboard-main {
+                width: 100% !important;
+
+                margin: 0 !important;
+            }
+
+            .dashboard-content {
+                padding: 0 !important;
+            }
+
+            .visitor-pass-card {
+                padding: 0 !important;
+            }
+
+            .dashboard-card {
+                border: none !important;
+
+                box-shadow: none !important;
+            }
+
+            .pass-document {
+                border: 2px solid #222 !important;
+            }
+
+        }
+
+    
+/* QR visibility override: keep the QR area visible on desktop and mobile */
+.visitor-main-info { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; gap: 18px !important; }
+.visitor-name-area { flex: 1 1 auto !important; min-width: 0 !important; }
+.qr-area { display: flex !important; visibility: visible !important; opacity: 1 !important; flex: 0 0 135px !important; width: 135px !important; min-height: 145px !important; align-items: center !important; justify-content: center !important; position: relative !important; z-index: 5 !important; }
+#qrcode { display: flex !important; visibility: visible !important; opacity: 1 !important; width: 118px !important; height: 118px !important; min-width: 118px !important; min-height: 118px !important; padding: 6px !important; background: #fff !important; box-sizing: border-box !important; align-items: center !important; justify-content: center !important; overflow: visible !important; }
+#qrcode img, #qrcode canvas { display: block !important; visibility: visible !important; opacity: 1 !important; width: 106px !important; height: 106px !important; max-width: none !important; }
+.qr-label { display: block !important; visibility: visible !important; opacity: 1 !important; text-align: center !important; color: #a7bfd1 !important; margin-top: 7px !important; }
+@media (max-width: 800px) { .visitor-main-info { flex-direction: column !important; align-items: stretch !important; } .qr-area { align-self: center !important; } }
+
+/* QR layout correction: keep the code compact and fully inside the pass */
+.visitor-pass-card { overflow: visible !important; }
+.visitor-main-info {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 20px !important;
+    min-width: 0 !important;
+}
+.visitor-name-area { flex: 1 1 auto !important; min-width: 0 !important; }
+.qr-area {
+    flex: 0 0 132px !important;
+    width: 132px !important;
+    max-width: 132px !important;
+    min-width: 132px !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+}
+#qrcode {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 116px !important;
+    height: 116px !important;
+    min-width: 116px !important;
+    min-height: 116px !important;
+    max-width: 116px !important;
+    max-height: 116px !important;
+    padding: 5px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+    background: #fff !important;
+    overflow: hidden !important;
+}
+#qrcode img, #qrcode canvas, #qrcode table {
+    display: block !important;
+    width: 106px !important;
+    height: 106px !important;
+    min-width: 106px !important;
+    min-height: 106px !important;
+    max-width: 106px !important;
+    max-height: 106px !important;
+    object-fit: contain !important;
+    margin: 0 !important;
+}
+.qr-label {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
+    white-space: normal !important;
+}
+@media (max-width: 650px) {
+    .visitor-main-info { gap: 12px !important; }
+    .qr-area { flex-basis: 120px !important; width: 120px !important; min-width: 120px !important; max-width: 120px !important; }
+    #qrcode { width: 108px !important; height: 108px !important; min-width: 108px !important; min-height: 108px !important; max-width: 108px !important; max-height: 108px !important; }
+    #qrcode img, #qrcode canvas, #qrcode table { width: 98px !important; height: 98px !important; min-width: 98px !important; min-height: 98px !important; max-width: 98px !important; max-height: 98px !important; }
+}
+@media print {
+    .visitor-main-info { display: flex !important; flex-direction: row !important; align-items: center !important; }
+    .qr-area { break-inside: avoid !important; }
+}
+
+
+/* Final QR scanability fix: larger code and white quiet zone around it */
+.qr-area {
+  flex: 0 0 210px !important;
+  width: 210px !important;
+  min-width: 210px !important;
+  max-width: 210px !important;
+  min-height: 210px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+#qrcode {
+  width: 196px !important;
+  height: 196px !important;
+  min-width: 196px !important;
+  min-height: 196px !important;
+  max-width: 196px !important;
+  max-height: 196px !important;
+  padding: 8px !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+  background: #fff !important;
+  overflow: hidden !important;
+}
+#qrcode img, #qrcode canvas {
+  display: block !important;
+  width: 180px !important;
+  height: 180px !important;
+  min-width: 180px !important;
+  min-height: 180px !important;
+  max-width: 180px !important;
+  max-height: 180px !important;
+  object-fit: contain !important;
+  image-rendering: pixelated !important;
+}
+.qr-label { text-align:center !important; width:100% !important; font-size:12px !important; }
+@media (max-width: 800px) {
+  .qr-area { align-self:center !important; }
+}
+
+</style>
+
+
+    <style id="smartoffice-qr-final">
+        #qrcode { width:176px!important; height:176px!important; min-width:176px!important; min-height:176px!important; max-width:176px!important; max-height:176px!important; padding:6px!important; margin:0 auto!important; display:flex!important; align-items:center!important; justify-content:center!important; box-sizing:border-box!important; background:#fff!important; overflow:visible!important; border-radius:4px!important; }
+        #qrcode img { display:block!important; width:164px!important; height:164px!important; min-width:164px!important; min-height:164px!important; max-width:164px!important; max-height:164px!important; object-fit:contain!important; image-rendering:pixelated!important; background:#fff!important; }
+        #qrcode canvas, #qrcode table { display:none!important; }
+        #qrcode .qr-error { width:220px; min-height:100px; padding:12px; box-sizing:border-box; display:flex; align-items:center; justify-content:center; text-align:center; color:#b42318; background:#fff; font-size:12px; }
+        @media print { #qrcode { break-inside:avoid; } }
+    </style>
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                🛡
+            </div>
+
+            <div>
+
+                <h2>
+                    SmartOffice
+                </h2>
+
+                <p>
+                    Office Security
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="sidebar-link"
+            >
+                <span>▦</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="visitor-registration.html"
+                class="sidebar-link"
+            >
+                <span>♙</span>
+                Register Visitor
+            </a>
+
+
+            <a
+                href="visitor-requests.html"
+                class="sidebar-link"
+            >
+                <span>▣</span>
+                Visitor Requests
+            </a>
+
+
+            <a
+                href="check-in.html"
+                class="sidebar-link"
+            >
+                <span>→</span>
+                Check-in
+            </a>
+
+
+            <a
+                href="check-out.html"
+                class="sidebar-link"
+            >
+                <span>←</span>
+                Check-out
+            </a>
+
+
+            <!-- ACTIVE PAGE -->
+            <a
+                href="visitor-pass.html"
+                class="sidebar-link active"
+            >
+                <span>▤</span>
+                Visitor Pass
+            </a>
+
+
+            <a
+                href="visitor-history.html"
+                class="sidebar-link"
+            >
+                <span>◴</span>
+                Visitor History
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="sidebar-link"
+            >
+                <span>▥</span>
+                Reports
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button
+                type="button"
+                class="logout-btn"
+                onclick="logout()"
+            >
+                ◯
+                <span>Logout</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <header class="dashboard-header">
+
+            <div class="dashboard-brand">
+
+                <strong>
+                    SmartOffice
+                </strong>
+
+                <div class="search-box">
+
+                    <span>
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        placeholder="Search visitors, hosts..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button
+                    type="button"
+                    class="header-btn primary"
+                    onclick="window.location.href='visitor-registration.html'"
+                >
+                    + Register Visitor
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-btn"
+                    onclick="window.location.href='check-in.html'"
+                >
+                    Check-in New
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-icon"
+                >
+                    ♧
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-icon"
+                >
+                    ⚙
+                </button>
+
+
+                <div class="profile-circle">
+                    SA
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             CONTENT
+        ====================================================== -->
+
+        <section class="dashboard-content visitor-pass-content">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="welcome-section">
+
+                <div>
+
+                    <p class="welcome-small">
+                        VISITOR MANAGEMENT
+                    </p>
+
+                    <h1>
+                        Visitor Pass
+                    </h1>
+
+                    <p class="dashboard-date">
+                        View and download visitor passes for approved visitors.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="verify-btn"
+                    onclick="window.location.href='visitor-requests.html'"
+                >
+                    ← Back to Requests
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MAIN GRID
+            ================================================== -->
+
+            <div class="visitor-pass-grid">
+
+
+                <div class="dashboard-card visitor-selector-card" style="grid-column: 1 / -1;">
+                    <label
+                        for="visitorSelector"
+                        class="visitor-selector-label"
+                    >
+                        Select Visitor
+                    </label>
+
+                    <select id="visitorSelector">
+                        <option value="">
+                            Loading approved visitors...
+                        </option>
+                    </select>
+
+                    <div class="visitor-selector-help">
+                        Choose the visitor whose pass and QR code you want to display.
+                    </div>
+                </div>
+
+
+                <!-- =================================================
+                     LEFT COLUMN
+                ================================================== -->
+
+                <div>
+
+
+                    <div class="dashboard-card visitor-pass-card">
+
+
+                        <!-- STATUS -->
+
+                        <div class="pass-status-row">
+
+                            <div class="approved-badge">
+
+                                <i class="fa-solid fa-check"></i>
+
+                                Approved
+
+                            </div>
+
+
+                            <div class="pass-id">
+
+                                Pass ID:
+                                <span id="passId">
+                                    ---
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PASS DOCUMENT -->
+
+                        <div class="pass-document">
+
+
+                            <!-- PASS HEADER -->
+
+                            <div class="pass-header">
+
+                                <div class="pass-logo">
+
+                                    <div class="pass-logo-icon">
+
+                                        <i class="fa-solid fa-shield-halved"></i>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <div class="pass-logo-title">
+                                            SMARTOFFICE
+                                        </div>
+
+                                        <div class="pass-logo-subtitle">
+                                            VISITOR PASS
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="pass-tagline">
+
+                                    Secure Access<br>
+                                    Better Tomorrow
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- PASS BODY -->
+
+                            <div class="pass-body">
+
+
+                                <!-- VISITOR NAME + QR -->
+
+                                <div class="visitor-main-info">
+
+
+                                    <div class="visitor-name-area">
+
+                                        <div class="visitor-icon">
+
+                                            <i class="fa-solid fa-user"></i>
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <div class="visitor-label">
+                                                Visitor Name
+                                            </div>
+
+                                            <div
+                                                class="visitor-name"
+                                                id="passVisitorName"
+                                            >
+                                                ---
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="qr-area">
+
+                                        <div id="qrcode"></div>
+
+                                        <div class="qr-label">
+                                            Scan for Check-in
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- DETAILS -->
+
+                                <div class="pass-details">
+
+
+                                    <!-- Visitor ID -->
+
+                                    <div class="detail-item">
+
+                                        <div class="detail-icon">
+
+                                            <i class="fa-regular fa-id-card"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="detail-label">
+                                                Visitor ID
+                                            </div>
+
+                                            <div
+                                                class="detail-value"
+                                                id="passVisitorId"
+                                            >
+                                                ---
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Visit Date -->
+
+                                    <div class="detail-item">
+
+                                        <div class="detail-icon">
+
+                                            <i class="fa-regular fa-calendar"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="detail-label">
+                                                Visit Date
+                                            </div>
+
+                                            <div
+                                                class="detail-value"
+                                                id="passVisitDate"
+                                            >
+                                                ---
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Person To Meet -->
+
+                                    <div class="detail-item">
+
+                                        <div class="detail-icon">
+
+                                            <i class="fa-solid fa-user"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="detail-label">
+                                                Person to Meet
+                                            </div>
+
+                                            <div
+                                                class="detail-value"
+                                                id="passPersonToMeet"
+                                            >
+                                                ---
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Arrival Time -->
+
+                                    <div class="detail-item">
+
+                                        <div class="detail-icon">
+
+                                            <i class="fa-regular fa-clock"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="detail-label">
+                                                Expected Arrival
+                                            </div>
+
+                                            <div
+                                                class="detail-value"
+                                                id="passArrivalTime"
+                                            >
+                                                ---
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Purpose -->
+
+                                    <div class="detail-item">
+
+                                        <div class="detail-icon">
+
+                                            <i class="fa-solid fa-briefcase"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="detail-label">
+                                                Purpose of Visit
+                                            </div>
+
+                                            <div
+                                                class="detail-value"
+                                                id="passPurpose"
+                                            >
+                                                ---
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Validity -->
+
+                                    <div class="detail-item">
+
+                                        <div class="detail-icon">
+
+                                            <i class="fa-solid fa-shield-halved"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="detail-label">
+                                                Pass Validity
+                                            </div>
+
+                                            <div
+                                                class="detail-value"
+                                                id="passValidity"
+                                            >
+                                                Full Day
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- PASS FOOTER -->
+
+                            <div class="pass-footer">
+
+                                <div>
+
+                                    <i class="fa-solid fa-building"></i>
+
+                                    SmartOffice Headquarters
+
+                                </div>
+
+
+                                <div class="pass-footer-right">
+
+                                    Thank you for visiting us!
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- INSTRUCTIONS -->
+
+                    <div class="dashboard-card instructions-card">
+
+                        <h3>
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            Important Instructions
+
+                        </h3>
+
+
+                        <ul>
+
+                            <li>
+                                Please scan the QR code at the reception desk for check-in.
+                            </li>
+
+                            <li>
+                                Carry a valid ID proof with you.
+                            </li>
+
+                            <li>
+                                This pass is valid only for the date and time mentioned above.
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     RIGHT COLUMN
+                ================================================== -->
+
+                <div class="pass-right-column">
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="dashboard-card pass-side-card">
+
+                        <h2>
+                            Pass Actions
+                        </h2>
+
+
+                        <button
+                            type="button"
+                            class="pass-action-btn"
+                            onclick="downloadPass()"
+                        >
+
+                            <i class="fa-solid fa-download"></i>
+
+                            <span>
+
+                                <span class="action-title">
+                                    Download Pass
+                                </span>
+
+                                <span class="action-subtitle">
+                                    Save as PDF
+                                </span>
+
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="pass-action-btn"
+                            onclick="printPass()"
+                        >
+
+                            <i class="fa-solid fa-print"></i>
+
+                            <span>
+
+                                <span class="action-title">
+                                    Print Pass
+                                </span>
+
+                                <span class="action-subtitle">
+                                    Print visitor pass
+                                </span>
+
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="pass-action-btn"
+                            onclick="sharePass()"
+                        >
+
+                            <i class="fa-solid fa-share-nodes"></i>
+
+                            <span>
+
+                                <span class="action-title">
+                                    Share Pass
+                                </span>
+
+                                <span class="action-subtitle">
+                                    Send via email or link
+                                </span>
+
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- VISITOR DETAILS -->
+
+                    <div class="dashboard-card pass-side-card">
+
+                        <h2>
+                            Visitor Details
+                        </h2>
+
+
+                        <!-- Name -->
+
+                        <div class="side-detail">
+
+                            <div class="side-detail-icon">
+
+                                <i class="fa-solid fa-user"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="side-detail-label">
+                                    Full Name
+                                </div>
+
+                                <div
+                                    class="side-detail-value"
+                                    id="sideVisitorName"
+                                >
+                                    ---
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Phone -->
+
+                        <div class="side-detail">
+
+                            <div class="side-detail-icon">
+
+                                <i class="fa-solid fa-phone"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="side-detail-label">
+                                    Phone Number
+                                </div>
+
+                                <div
+                                    class="side-detail-value"
+                                    id="sidePhone"
+                                >
+                                    ---
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Email -->
+
+                        <div class="side-detail">
+
+                            <div class="side-detail-icon">
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="side-detail-label">
+                                    Email Address
+                                </div>
+
+                                <div
+                                    class="side-detail-value"
+                                    id="sideEmail"
+                                >
+                                    ---
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Host -->
+
+                        <div class="side-detail">
+
+                            <div class="side-detail-icon">
+
+                                <i class="fa-solid fa-user-tie"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="side-detail-label">
+                                    Host / Person to Meet
+                                </div>
+
+                                <div
+                                    class="side-detail-value"
+                                    id="sidePersonToMeet"
+                                >
+                                    ---
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Purpose -->
+
+                        <div class="side-detail">
+
+                            <div class="side-detail-icon">
+
+                                <i class="fa-solid fa-briefcase"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="side-detail-label">
+                                    Purpose
+                                </div>
+
+                                <div
+                                    class="side-detail-value"
+                                    id="sidePurpose"
+                                >
+                                    ---
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         EXISTING PROJECT SCRIPT
+    ====================================================== -->
+
+    <script src="script.js"></script>
+
+
+
+    <!-- =====================================================
+         VISITOR PASS SCRIPT
+    ====================================================== -->
+
+    <script>
+
+        const VISITOR_API =
+            "http://localhost:5000/api/visitors";
+
+
+        let currentVisitor = null;
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async function () {
+
+                const params =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+                const requestedVisitorId =
+                    params.get("id");
+
+                try {
+
+                    /*
+                     * Load all visitors so the Visitor Pass page
+                     * can be used directly and the user can choose
+                     * any approved visitor.
+                     */
+                    const response =
+                        await fetch(VISITOR_API);
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Failed to fetch visitors"
+                        );
+                    }
+
+                    const visitors =
+                        await response.json();
+
+                    // Show every database visitor so the user can select any record.
+                    const availableVisitors = visitors;
+
+                    const selector =
+                        document.getElementById(
+                            "visitorSelector"
+                        );
+
+                    selector.innerHTML = "";
+
+                    if (!availableVisitors.length) {
+
+                        selector.innerHTML =
+                            `<option value="">No visitors available</option>`;
+
+                        throw new Error(
+                            "No visitors found"
+                        );
+
+                    }
+
+                    availableVisitors.forEach(
+                        visitor => {
+
+                            const option =
+                                document.createElement("option");
+
+                            option.value =
+                                visitor._id;
+
+                            option.textContent =
+                                `${visitor.name} — ${visitor.personToMeet || "No host"} — ${visitor.visitDate ? new Date(visitor.visitDate).toLocaleDateString("en-GB") : "No date"} — ${visitor.status || "Unknown status"}`;
+
+                            selector.appendChild(
+                                option
+                            );
+
+                        }
+                    );
+
+                    /*
+                     * If visitor-pass.html?id=... was opened,
+                     * select that exact visitor. Otherwise select
+                     * the newest approved visitor.
+                     */
+                    const requestedExists =
+                        availableVisitors.some(
+                            visitor =>
+                                String(visitor._id) ===
+                                String(requestedVisitorId)
+                        );
+
+                    if (
+                        requestedVisitorId &&
+                        requestedExists
+                    ) {
+
+                        selector.value =
+                            requestedVisitorId;
+
+                    } else {
+
+                        selector.value =
+                            availableVisitors[0]._id;
+
+                    }
+
+                    await loadVisitor(
+                        selector.value
+                    );
+
+                    selector.addEventListener(
+                        "change",
+                        async function () {
+
+                            if (this.value) {
+                                await loadVisitor(
+                                    this.value
+                                );
+                            }
+
+                        }
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Visitor pass error:",
+                        error
+                    );
+
+                    const selector =
+                        document.getElementById(
+                            "visitorSelector"
+                        );
+
+                    if (
+                        selector &&
+                        selector.options.length === 0
+                    ) {
+                        selector.innerHTML =
+                            `<option value="">Unable to load visitors</option>`;
+                    }
+
+                    alert(
+                        "Unable to load visitors. Make sure the backend is running."
+                    );
+
+                }
+
+            }
+        );
+
+
+        async function loadVisitor(visitorId) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${VISITOR_API}/${visitorId}`
+                    );
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Failed to fetch visitor"
+                    );
+                }
+
+                const visitor =
+                    await response.json();
+
+                currentVisitor = visitor;
+
+
+                /* =========================
+                   DISPLAY IDs
+                ========================= */
+
+                const createdYear =
+                    new Date(
+                        visitor.createdAt || Date.now()
+                    ).getFullYear();
+
+                const shortId =
+                    String(visitor._id)
+                        .slice(-4)
+                        .toUpperCase();
+
+                const visitorDisplayId =
+                    `VIS-${createdYear}-${shortId}`;
+
+                const passDisplayId =
+                    `VP-${createdYear}-${shortId}`;
+
+
+                /* =========================
+                   PASS INFORMATION
+                ========================= */
+
+                document.getElementById(
+                    "passId"
+                ).textContent =
+                    passDisplayId;
+
+                document.getElementById(
+                    "passVisitorName"
+                ).textContent =
+                    visitor.name || "---";
+
+                document.getElementById(
+                    "passVisitorId"
+                ).textContent =
+                    visitorDisplayId;
+
+                document.getElementById(
+                    "passVisitDate"
+                ).textContent =
+                    visitor.visitDate
+                        ? new Date(
+                            visitor.visitDate
+                        ).toLocaleDateString(
+                            "en-GB",
+                            {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                        : "---";
+
+                document.getElementById(
+                    "passPersonToMeet"
+                ).textContent =
+                    visitor.personToMeet || "---";
+
+                document.getElementById(
+                    "passArrivalTime"
+                ).textContent =
+                    visitor.arrivalTime || "---";
+
+                document.getElementById(
+                    "passPurpose"
+                ).textContent =
+                    visitor.purpose || "---";
+
+
+                /* =========================
+                   RIGHT SIDE DETAILS
+                ========================= */
+
+                document.getElementById(
+                    "sideVisitorName"
+                ).textContent =
+                    visitor.name || "---";
+
+                document.getElementById(
+                    "sidePhone"
+                ).textContent =
+                    visitor.phone || "---";
+
+                document.getElementById(
+                    "sideEmail"
+                ).textContent =
+                    visitor.email || "---";
+
+                document.getElementById(
+                    "sidePersonToMeet"
+                ).textContent =
+                    visitor.personToMeet || "---";
+
+                document.getElementById(
+                    "sidePurpose"
+                ).textContent =
+                    visitor.purpose || "---";
+
+
+                /* =========================
+                   QR CODE - REAL VISITOR DATA
+                ========================= */
+                const qrContainer = document.getElementById("qrcode");
+                qrContainer.replaceChildren();
+                qrContainer.style.background = "#ffffff";
+                qrContainer.setAttribute("aria-label", "QR code containing this visitor's details");
+
+                // Use real data from the selected MongoDB record. Do not include phone/email.
+                const qrData = {
+                    app: "SmartOffice",
+                    visitorId: String(visitor._id || ""),
+                    name: String(visitor.name || ""),
+                    host: String(visitor.personToMeet || ""),
+                    purpose: String(visitor.purpose || ""),
+                    date: visitor.visitDate ? new Date(visitor.visitDate).toISOString().slice(0, 10) : "",
+                    time: String(visitor.arrivalTime || ""),
+                    status: String(visitor.status || "")
+                };
+                const qrText = JSON.stringify(qrData);
+                qrContainer.setAttribute("data-qr-payload", qrText);
+
+                const qrImage = document.createElement("img");
+                qrImage.alt = "Scan to view this visitor's details";
+                qrImage.width = 240;
+                qrImage.height = 240;
+                qrImage.decoding = "async";
+                qrImage.style.cssText = "display:block;width:240px;height:240px;max-width:none;object-fit:contain;background:#fff;image-rendering:pixelated";
+                qrImage.onerror = function () {
+                    qrContainer.replaceChildren();
+                    const message = document.createElement("div");
+                    message.className = "qr-error";
+                    message.textContent = "QR service could not load. Check your internet connection and refresh the page.";
+                    qrContainer.appendChild(message);
+                };
+                // Generates a standard QR image from the selected visitor's actual data.
+                // Internet access is required for this QR image service.
+                qrImage.src = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=4&format=png&data=" + encodeURIComponent(qrText);
+                qrContainer.appendChild(qrImage);
+
+            } catch (error) {
+
+                console.error(
+                    "Visitor loading error:",
+                    error
+                );
+
+                document.getElementById(
+                    "qrcode"
+                ).innerHTML =
+                    `<div class="qr-error">Unable to generate QR code.</div>`;
+
+                alert(
+                    "Unable to load this visitor."
+                );
+
+            }
+
+        }
+
+
+
+
+        /* =====================================================
+           PRINT
+        ====================================================== */
+
+        function printPass() {
+
+            window.print();
+
+        }
+
+
+
+        /* =====================================================
+           DOWNLOAD
+        ====================================================== */
+
+        async function downloadPass() {
+
+            const passElement =
+                document.querySelector(".pass-document");
+
+            const passId =
+                document.getElementById("passId")?.textContent.trim() ||
+                "visitor-pass";
+
+            if (!passElement) {
+
+                alert("Visitor pass is not available yet.");
+                return;
+
+            }
+
+            if (typeof html2canvas === "undefined" ||
+                typeof window.jspdf === "undefined") {
+
+                alert(
+                    "The PDF generator could not be loaded. Please check your internet connection and refresh the page."
+                );
+                return;
+
+            }
+
+            const button =
+                document.querySelector(
+                    'button[onclick="downloadPass()"]'
+                );
+
+            const originalTitle =
+                button?.querySelector(".action-title")?.textContent;
+
+            try {
+
+                if (button) {
+                    button.disabled = true;
+                    button.style.opacity = "0.65";
+                }
+
+                if (button?.querySelector(".action-title")) {
+                    button.querySelector(".action-title").textContent =
+                        "Creating PDF...";
+                }
+
+                /* Make sure the QR image/canvas has finished rendering. */
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                const canvas = await html2canvas(
+                    passElement,
+                    {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: "#06283d",
+                        logging: false
+                    }
+                );
+
+                const { jsPDF } = window.jspdf;
+
+                const pdf = new jsPDF({
+                    orientation: "landscape",
+                    unit: "mm",
+                    format: "a4"
+                });
+
+                const pageWidth =
+                    pdf.internal.pageSize.getWidth();
+
+                const pageHeight =
+                    pdf.internal.pageSize.getHeight();
+
+                const margin = 10;
+                const availableWidth = pageWidth - (margin * 2);
+                const availableHeight = pageHeight - (margin * 2);
+
+                const imageRatio =
+                    canvas.width / canvas.height;
+
+                let imageWidth = availableWidth;
+                let imageHeight = imageWidth / imageRatio;
+
+                if (imageHeight > availableHeight) {
+                    imageHeight = availableHeight;
+                    imageWidth = imageHeight * imageRatio;
+                }
+
+                const x =
+                    (pageWidth - imageWidth) / 2;
+
+                const y =
+                    (pageHeight - imageHeight) / 2;
+
+                pdf.addImage(
+                    canvas.toDataURL("image/png"),
+                    "PNG",
+                    x,
+                    y,
+                    imageWidth,
+                    imageHeight
+                );
+
+                const safePassId =
+                    passId.replace(/[^a-z0-9_-]/gi, "-");
+
+                pdf.save(
+                    `SmartOffice-Visitor-Pass-${safePassId}.pdf`
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "PDF generation error:",
+                    error
+                );
+
+                alert(
+                    "Unable to create the PDF. Please make sure the visitor pass and QR code are fully loaded, then try again."
+                );
+
+            } finally {
+
+                if (button) {
+                    button.disabled = false;
+                    button.style.opacity = "";
+                }
+
+                if (button?.querySelector(".action-title") && originalTitle) {
+                    button.querySelector(".action-title").textContent =
+                        originalTitle;
+                }
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           SHARE
+        ====================================================== */
+
+        async function sharePass() {
+
+            const visitorName =
+                document.getElementById(
+                    "passVisitorName"
+                )?.textContent || "Visitor";
+
+
+            const passId =
+                document.getElementById(
+                    "passId"
+                )?.textContent || "---";
+
+
+            const shareData = {
+
+                title:
+                    "SmartOffice Visitor Pass",
+
+                text:
+                    `Visitor Pass for ${visitorName}\n` +
+                    `Pass ID: ${passId}`,
+
+                url:
+                    window.location.href
+
+            };
+
+
+            if (navigator.share) {
+
+                try {
+
+                    await navigator.share(
+                        shareData
+                    );
+
+                } catch (error) {
+
+                    console.log(
+                        "Share cancelled."
+                    );
+
+                }
+
+            } else {
+
+                alert(
+                    "Sharing is not supported in this browser."
+                );
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

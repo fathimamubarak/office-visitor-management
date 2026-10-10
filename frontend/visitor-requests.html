@@ -1,0 +1,227 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Visitor Requests | SmartOffice</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <!-- BRAND -->
+        <div class="brand">
+            <div class="brand-icon">🛡</div>
+
+            <div>
+                <strong>SmartOffice</strong>
+                <small>Office Security</small>
+            </div>
+        </div>
+
+        <!-- NAVIGATION -->
+        <nav class="sidebar-nav">
+
+            <a href="dashboard.html" class="sidebar-link">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="visitor-registration.html" class="sidebar-link">
+                <span>♙</span>
+                Register Visitor
+            </a>
+
+            <a href="visitor-requests.html" class="sidebar-link active">
+                <span>▣</span>
+                Visitor Requests
+            </a>
+
+            <a href="check-in.html" class="sidebar-link">
+                <span>→</span>
+                Check-in
+            </a>
+
+            <a href="check-out.html" class="sidebar-link">
+                <span>←</span>
+                Check-out
+            </a>
+
+            <a href="visitor-pass.html" class="sidebar-link">
+                <span>▤</span>
+                Visitor Pass
+            </a>
+
+            <a href="visitor-history.html" class="sidebar-link">
+                <span>◷</span>
+                Visitor History
+            </a>
+
+            <!-- Only ONE Reports link -->
+            <a href="reports.html" class="sidebar-link">
+                <span>▥</span>
+                Reports
+            </a>
+
+        </nav>
+
+        <!-- SIDEBAR BOTTOM -->
+        <div class="sidebar-bottom">
+            <a href="staff-login.html" class="logout-link">
+                ◯ &nbsp; Logout
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="requests-main">
+
+        <!-- TOP BAR -->
+        <header class="dashboard-topbar">
+
+            <div class="topbar-title">
+                <strong>SmartOffice</strong>
+                <span>Visitor Management</span>
+            </div>
+
+            <div class="topbar-search">
+                🔍
+                <input
+                    type="text"
+                    id="requestSearch"
+                    placeholder="Search visitors, hosts..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="topbar-actions">
+
+                <button
+                    type="button"
+                    class="checkin-new-btn"
+                    onclick="window.location.href='check-in.html'"
+                >
+                    Check-in New
+                </button>
+
+                <span>Support</span>
+                <span>♧</span>
+                <span>⚙</span>
+
+            </div>
+
+        </header>
+
+        <!-- PAGE HEADING -->
+        <section class="requests-heading">
+
+            <div>
+                <p class="page-label">VISITOR MANAGEMENT</p>
+
+                <h1>Visitor Requests</h1>
+
+                <p>
+                    Review and manage visitor requests awaiting approval.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="refresh-requests-btn"
+                onclick="loadVisitorRequests()"
+            >
+                ↻ Refresh
+            </button>
+
+        </section>
+
+        <!-- REQUEST SUMMARY -->
+        <section class="request-stats">
+
+            <div class="request-stat-card">
+                <span>Pending Requests</span>
+                <strong id="pendingCount">0</strong>
+            </div>
+
+            <div class="request-stat-card">
+                <span>Approved Today</span>
+                <strong id="approvedCount">0</strong>
+            </div>
+
+            <div class="request-stat-card">
+                <span>Rejected Today</span>
+                <strong id="rejectedCount">0</strong>
+            </div>
+
+        </section>
+
+        <!-- REQUEST TABLE CARD -->
+        <section class="requests-card">
+
+            <div class="requests-card-header">
+
+                <div>
+                    <h2>Visitor Requests</h2>
+                    <p>Visitors waiting for employee approval</p>
+                </div>
+
+                <!-- STATUS FILTER -->
+                <select id="statusFilter">
+                    <option value="all">All Requests</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Expected">Expected</option>
+                    <option value="Checked-In">Checked-In</option>
+                    <option value="Checked-Out">Checked-Out</option>
+                </select>
+
+            </div>
+
+            <!-- TABLE -->
+            <div class="requests-table-wrapper">
+
+                <table class="requests-table">
+
+                    <thead>
+                        <tr>
+                            <th>Visitor</th>
+                            <th>Contact</th>
+                            <th>Host</th>
+                            <th>Purpose</th>
+                            <th>Visit Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="requestsTableBody">
+                        <tr>
+                            <td colspan="7" class="empty-request">
+                                Loading visitor requests...
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- EXISTING PROJECT JAVASCRIPT -->
+    <script src="script.js"></script>
+
+</body>
+</html>
+```

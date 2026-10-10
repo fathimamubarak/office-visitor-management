@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Visitor History | SmartOffice</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                🛡
+            </div>
+
+            <div>
+
+                <h2>
+                    SmartOffice
+                </h2>
+
+                <p>
+                    Office Security
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="sidebar-link"
+            >
+                <span>▦</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="visitor-registration.html"
+                class="sidebar-link"
+            >
+                <span>♙</span>
+                Register Visitor
+            </a>
+
+
+            <a
+                href="visitor-requests.html"
+                class="sidebar-link"
+            >
+                <span>▣</span>
+                Visitor Requests
+            </a>
+
+
+            <a
+                href="check-in.html"
+                class="sidebar-link"
+            >
+                <span>→</span>
+                Check-in
+            </a>
+
+
+            <a
+                href="check-out.html"
+                class="sidebar-link"
+            >
+                <span>←</span>
+                Check-out
+            </a>
+
+
+            <a
+                href="visitor-pass.html"
+                class="sidebar-link"
+            >
+                <span>▤</span>
+                Visitor Pass
+            </a>
+
+
+            <a
+                href="visitor-history.html"
+                class="sidebar-link active"
+            >
+                <span>◴</span>
+                Visitor History
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="sidebar-link"
+            >
+                <span>▥</span>
+                Reports
+            </a>
+
+
+        </nav>
+
+
+        <!-- LOGOUT -->
+
+        <div class="sidebar-bottom">
+
+            <button
+                type="button"
+                class="logout-btn"
+                onclick="logout()"
+            >
+                ◯
+                <span>Logout</span>
+            </button>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="dashboard-header">
+
+
+            <div class="dashboard-brand">
+
+                <strong>
+                    SmartOffice
+                </strong>
+
+
+                <div class="search-box">
+
+                    <span>
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        id="historySearch"
+                        placeholder="Search visitors..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="header-actions">
+
+
+                <button
+                    type="button"
+                    class="header-btn primary"
+                    onclick="registerNewVisitor()"
+                >
+                    + Register Visitor
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-btn"
+                    onclick="goToCheckIn()"
+                >
+                    Check-in New
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-icon"
+                >
+                    ♧
+                </button>
+
+
+                <button
+                    type="button"
+                    class="header-icon"
+                >
+                    ⚙
+                </button>
+
+
+                <div class="profile-circle">
+                    SA
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================== -->
+
+        <div class="dashboard-content">
+
+
+            <!-- PAGE HEADING -->
+
+            <section class="history-heading">
+
+
+                <div>
+
+                    <p class="page-label">
+                        VISITOR MANAGEMENT
+                    </p>
+
+
+                    <h1>
+                        Visitor History
+                    </h1>
+
+
+                    <p>
+                        Comprehensive log of all facility visits.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="export-history-btn"
+                    onclick="exportVisitorHistory()"
+                >
+                    ↓ &nbsp; Export Report
+                </button>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FILTER CARD
+            ================================================== -->
+
+            <section class="history-filter-card">
+
+
+                <div class="history-filter-grid">
+
+
+                    <!-- SEARCH -->
+
+                    <div class="history-filter-field">
+
+                        <label>
+                            Search
+                        </label>
+
+                        <input
+                            type="text"
+                            id="historyNameFilter"
+                            placeholder="Name or ID"
+                        >
+
+                    </div>
+
+
+
+                    <!-- DATE -->
+
+                    <div class="history-filter-field">
+
+                        <label>
+                            Date Range
+                        </label>
+
+                        <select id="historyDateFilter">
+
+                            <option value="30">
+                                Last 30 Days
+                            </option>
+
+                            <option value="7">
+                                Last 7 Days
+                            </option>
+
+                            <option value="90">
+                                Last 90 Days
+                            </option>
+
+                            <option value="all">
+                                All Time
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- HOST -->
+
+                    <div class="history-filter-field">
+
+                        <label>
+                            Host Employee
+                        </label>
+
+                        <input
+                            type="text"
+                            id="historyHostFilter"
+                            placeholder="Select host"
+                        >
+
+                    </div>
+
+
+
+                    <!-- STATUS -->
+
+                    <div class="history-filter-field">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="historyStatusFilter">
+
+                            <option value="all">
+                                All Statuses
+                            </option>
+
+                            <option value="Checked-Out">
+                                Checked-out
+                            </option>
+
+                            <option value="Checked-In">
+                                Checked-in
+                            </option>
+
+                            <option value="Approved">
+                                Approved
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="Expected">
+                                Expected
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- FILTER BUTTONS -->
+
+                <div class="history-filter-actions">
+
+
+                    <button
+                        type="button"
+                        class="clear-history-btn"
+                        onclick="clearHistoryFilters()"
+                    >
+                        Clear Filters
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="apply-history-btn"
+                        onclick="applyHistoryFilters()"
+                    >
+                        Apply Filter
+                    </button>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 HISTORY TABLE
+            ================================================== -->
+
+            <section class="history-table-card">
+
+
+                <div class="history-table-wrapper">
+
+
+                    <table class="history-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Visitor ID
+                                </th>
+
+                                <th>
+                                    Visitor Name
+                                </th>
+
+                                <th>
+                                    Host
+                                </th>
+
+                                <th>
+                                    Purpose
+                                </th>
+
+                                <th>
+                                    Date & Time
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody id="historyTableBody">
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TABLE FOOTER
+                ================================================== -->
+
+                <div class="history-table-footer">
+
+
+                    <span id="historyEntryCount">
+                        Showing 1 to 4 of 4 entries
+                    </span>
+
+
+                    <div class="history-pagination">
+
+
+                        <button
+                            type="button"
+                            disabled
+                        >
+                            ‹
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="page-active"
+                        >
+                            1
+                        </button>
+
+
+                        <button
+                            type="button"
+                        >
+                            2
+                        </button>
+
+
+                        <button
+                            type="button"
+                        >
+                            3
+                        </button>
+
+
+                        <span>
+                            ...
+                        </span>
+
+
+                        <button
+                            type="button"
+                        >
+                            12
+                        </button>
+
+
+                        <button
+                            type="button"
+                        >
+                            ›
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         HISTORY PAGE JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        const HISTORY_API = "http://localhost:5000/api/visitors";
+        let historyVisitors = [];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadVisitorHistory();
+
+            const topSearch = document.getElementById("historySearch");
+            if (topSearch) {
+                topSearch.addEventListener("input", renderVisitorHistory);
+            }
+        });
+
+        async function loadVisitorHistory() {
+            const tableBody = document.getElementById("historyTableBody");
+
+            if (!tableBody) return;
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center; padding:40px;">
+                        Loading real visitor records...
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const response = await fetch(HISTORY_API);
+
+                if (!response.ok) {
+                    throw new Error("Failed to load visitors");
+                }
+
+                historyVisitors = await response.json();
+                renderVisitorHistory();
+
+            } catch (error) {
+                console.error("Visitor history error:", error);
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding:40px; color:#e74c3c;">
+                            Unable to load visitor records.<br><br>
+                            Make sure the backend server and MongoDB are running.
+                        </td>
+                    </tr>
+                `;
+
+                document.getElementById("historyEntryCount").textContent =
+                    "Unable to load records";
+            }
+        }
+
+        function renderVisitorHistory() {
+            const tableBody = document.getElementById("historyTableBody");
+            if (!tableBody) return;
+
+            const search = (document.getElementById("historyNameFilter")?.value || "")
+                .trim()
+                .toLowerCase();
+
+            const topSearch = (document.getElementById("historySearch")?.value || "")
+                .trim()
+                .toLowerCase();
+
+            const host = (document.getElementById("historyHostFilter")?.value || "")
+                .trim()
+                .toLowerCase();
+
+            const status = document.getElementById("historyStatusFilter")?.value || "all";
+            const dateRange = document.getElementById("historyDateFilter")?.value || "30";
+
+            const now = new Date();
+
+            const filtered = historyVisitors.filter(function (visitor) {
+                const searchableText = [
+                    visitor._id,
+                    visitor.name,
+                    visitor.phone,
+                    visitor.email,
+                    visitor.personToMeet,
+                    visitor.purpose,
+                    visitor.status
+                ].filter(Boolean).join(" ").toLowerCase();
+
+                const matchesSearch = !search || searchableText.includes(search);
+                const matchesTopSearch = !topSearch || searchableText.includes(topSearch);
+                const matchesHost = !host || (visitor.personToMeet || "").toLowerCase().includes(host);
+                const matchesStatus = status === "all" || visitor.status === status;
+
+                let matchesDate = true;
+                if (dateRange !== "all") {
+                    const days = Number(dateRange);
+                    const visitorDate = new Date(visitor.visitDate || visitor.createdAt);
+                    const oldestAllowed = new Date(now);
+                    oldestAllowed.setDate(oldestAllowed.getDate() - days);
+                    matchesDate = !Number.isNaN(visitorDate.getTime()) && visitorDate >= oldestAllowed;
+                }
+
+                return matchesSearch && matchesTopSearch && matchesHost && matchesStatus && matchesDate;
+            });
+
+            if (filtered.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding:40px; color:#888;">
+                            No visitor records found.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tableBody.innerHTML = filtered.map(function (visitor) {
+                    const createdYear = new Date(visitor.createdAt || visitor.visitDate || Date.now()).getFullYear();
+                    const shortId = String(visitor._id || "").slice(-4).toUpperCase();
+                    const displayId = `VIS-${createdYear}-${shortId}`;
+                    const date = visitor.visitDate
+                        ? new Date(visitor.visitDate).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric"
+                        })
+                        : "--";
+
+                    const time = visitor.arrivalTime || "--";
+                    const status = visitor.status || "Pending";
+                    const statusClass = getHistoryStatusClass(status);
+
+                    return `
+                        <tr>
+                            <td class="visitor-id">#${escapeHistoryHtml(displayId)}</td>
+                            <td>${escapeHistoryHtml(visitor.name || "--")}</td>
+                            <td>${escapeHistoryHtml(visitor.personToMeet || "--")}</td>
+                            <td>${escapeHistoryHtml(visitor.purpose || "--")}</td>
+                            <td>
+                                ${escapeHistoryHtml(date)}
+                                <small>${escapeHistoryHtml(time)}</small>
+                            </td>
+                            <td>
+                                <span class="history-status ${statusClass}">
+                                    ● ${escapeHistoryHtml(status)}
+                                </span>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="history-action-btn"
+                                    title="Open visitor pass"
+                                    onclick="openVisitorPassById('${escapeHistoryAttribute(visitor._id)}')"
+                                >
+                                    ↗
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+            }
+
+            document.getElementById("historyEntryCount").textContent =
+                `Showing ${filtered.length} of ${historyVisitors.length} entries`;
+        }
+
+        function getHistoryStatusClass(status) {
+            switch (status) {
+                case "Checked-Out": return "checked-out";
+                case "Checked-In": return "checked-in";
+                case "Approved": return "approved";
+                case "Rejected": return "rejected";
+                default: return "pending";
+            }
+        }
+
+        function escapeHistoryHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function escapeHistoryAttribute(value) {
+            return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+        }
+
+        function applyHistoryFilters() {
+            renderVisitorHistory();
+        }
+
+        function clearHistoryFilters() {
+            document.getElementById("historyNameFilter").value = "";
+            document.getElementById("historyHostFilter").value = "";
+            document.getElementById("historyDateFilter").value = "30";
+            document.getElementById("historyStatusFilter").value = "all";
+            document.getElementById("historySearch").value = "";
+            renderVisitorHistory();
+        }
+
+        function exportVisitorHistory() {
+            if (!historyVisitors.length) {
+                alert("There are no visitor records to export.");
+                return;
+            }
+
+            const headers = ["Visitor ID", "Name", "Phone", "Email", "Host", "Purpose", "Visit Date", "Arrival Time", "Status"];
+            const rows = historyVisitors.map(function (visitor) {
+                return [
+                    visitor._id || "",
+                    visitor.name || "",
+                    visitor.phone || "",
+                    visitor.email || "",
+                    visitor.personToMeet || "",
+                    visitor.purpose || "",
+                    visitor.visitDate || "",
+                    visitor.arrivalTime || "",
+                    visitor.status || ""
+                ];
+            });
+
+            const csv = [headers, ...rows]
+                .map(row => row.map(value => `"${String(value).replace(/"/g, '""')}"`).join(","))
+                .join("\\n");
+
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "visitor-history.csv";
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+    </script>
+
+
+    <!-- COMMON SCRIPT -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Check-out | SmartOffice</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">🛡</div>
+
+            <div>
+                <strong>SmartOffice</strong>
+                <small>Visitor Management</small>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="dashboard.html" class="sidebar-link">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="visitor-registration.html" class="sidebar-link">
+                <span>♙</span>
+                Register Visitor
+            </a>
+
+            <a href="visitor-requests.html" class="sidebar-link">
+                <span>▣</span>
+                Visitor Requests
+            </a>
+
+            <a href="check-in.html" class="sidebar-link">
+                <span>→</span>
+                Check-in
+            </a>
+
+            <a href="check-out.html" class="sidebar-link active">
+                <span>←</span>
+                Check-out
+            </a>
+
+            <a href="visitor-pass.html" class="sidebar-link">
+                <span>▤</span>
+                Visitor Pass
+            </a>
+
+            <a href="visitor-history.html" class="sidebar-link">
+                <span>◷</span>
+                Visitor History
+            </a>
+
+            <a href="reports.html" class="sidebar-link">
+                <span>▥</span>
+                Reports
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="staff-login.html" class="logout-link">
+                ◯ &nbsp; Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="checkout-main">
+
+        <!-- TOP BAR -->
+        <header class="dashboard-topbar">
+
+            <div class="topbar-title">
+                <strong>SmartOffice</strong>
+                <span>Visitor Management</span>
+            </div>
+
+            <div class="topbar-search">
+                🔍
+                <input
+                    type="text"
+                    id="checkoutSearch"
+                    placeholder="Search visitors..."
+                >
+            </div>
+
+            <div class="topbar-actions">
+
+                <button
+                    type="button"
+                    class="checkout-new-btn"
+                    onclick="window.location.href='check-in.html'"
+                >
+                    + Check-in Visitor
+                </button>
+
+                <span>Support</span>
+                <span>⚙</span>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE HEADER -->
+        <section class="checkout-heading">
+
+            <div>
+
+                <p class="page-label">
+                    VISITOR MANAGEMENT
+                </p>
+
+                <h1>
+                    Check-out Visitor
+                </h1>
+
+                <p>
+                    Record when a visitor leaves the facility.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- CHECKOUT CONTENT -->
+        <section class="checkout-layout">
+
+            <!-- VISITOR LIST -->
+            <div class="checkout-list-card">
+
+                <div class="checkout-card-header">
+
+                    <div>
+                        <h2>
+                            Visitors Currently Inside
+                        </h2>
+
+                        <p>
+                            Select a visitor to complete checkout.
+                        </p>
+                    </div>
+
+                    <span
+                        class="inside-count"
+                        id="insideCount"
+                    >
+                        0 Inside
+                    </span>
+
+                </div>
+
+
+                <div class="checkout-search">
+
+                    <span>🔍</span>
+
+                    <input
+                        type="text"
+                        id="visitorCheckoutSearch"
+                        placeholder="Search by visitor name or phone..."
+                    >
+
+                </div>
+
+
+                <!-- DYNAMIC VISITOR LIST -->
+                <div id="checkoutVisitorList">
+
+                    <div
+                        style="
+                            padding: 30px;
+                            text-align: center;
+                            color: #888;
+                        "
+                    >
+                        Loading visitors...
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHECKOUT DETAILS -->
+            <div class="checkout-details-card">
+
+                <div class="checkout-card-header">
+
+                    <div>
+
+                        <h2>
+                            Checkout Details
+                        </h2>
+
+                        <p>
+                            Review the visitor information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY STATE -->
+                <div
+                    id="checkoutEmpty"
+                    class="checkout-empty"
+                >
+
+                    <div class="checkout-empty-icon">
+                        ←
+                    </div>
+
+                    <h3>
+                        Select a visitor
+                    </h3>
+
+                    <p>
+                        Choose a visitor from the list to view
+                        their visit details and complete checkout.
+                    </p>
+
+                </div>
+
+
+                <!-- SELECTED VISITOR -->
+                <div
+                    id="checkoutDetails"
+                    class="selected-checkout"
+                    style="display: none;"
+                >
+
+                    <div class="selected-visitor-header">
+
+                        <div
+                            class="large-avatar"
+                            id="selectedAvatar"
+                        >
+                            --
+                        </div>
+
+                        <div>
+
+                            <h3 id="selectedVisitorName">
+                                Visitor
+                            </h3>
+
+                            <span>
+                                Currently inside
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="checkout-info-grid">
+
+                        <div>
+                            <label>
+                                Phone
+                            </label>
+
+                            <strong id="selectedPhone">
+                                --
+                            </strong>
+                        </div>
+
+                        <div>
+                            <label>
+                                Person to Meet
+                            </label>
+
+                            <strong id="selectedHost">
+                                --
+                            </strong>
+                        </div>
+
+                        <div>
+                            <label>
+                                Purpose
+                            </label>
+
+                            <strong id="selectedPurpose">
+                                --
+                            </strong>
+                        </div>
+
+                        <div>
+                            <label>
+                                Check-in Time
+                            </label>
+
+                            <strong id="selectedCheckin">
+                                --
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="checkout-time-box">
+
+                        <span>
+                            Checkout Time
+                        </span>
+
+                        <strong id="checkoutTime">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="confirm-checkout-btn"
+                        id="confirmCheckoutBtn"
+                        onclick="confirmCheckout()"
+                    >
+                        Confirm Check-out
+                        →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SECURITY NOTE -->
+        <section class="checkout-security">
+
+            <div class="security-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Secure Visitor Checkout
+                </strong>
+
+                <p>
+                    Checkout records are securely stored and
+                    available in Visitor History.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- YOUR MAIN SCRIPT -->
+    <script src="script.js"></script>
+
+
+    <!-- CHECKOUT PAGE SCRIPT -->
+    <script>
+
+        const CHECKOUT_API =
+            "http://localhost:5000/api/visitors";
+
+        let checkoutVisitors = [];
+
+        let selectedVisitor = null;
+
+
+        /*
+        ==========================================================
+        LOAD VISITORS
+        ==========================================================
+        */
+
+        async function loadCheckoutVisitors() {
+
+            const list =
+                document.getElementById("checkoutVisitorList");
+
+            try {
+
+                list.innerHTML = `
+                    <div
+                        style="
+                            padding:30px;
+                            text-align:center;
+                            color:#888;
+                        "
+                    >
+                        Loading visitors...
+                    </div>
+                `;
+
+
+                const response =
+                    await fetch(CHECKOUT_API);
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Failed to load visitors"
+                    );
+
+                }
+
+
+                const visitors =
+                    await response.json();
+
+
+                /*
+                 * Only visitors who are actually checked in
+                 * should appear on the checkout page.
+                 */
+
+                checkoutVisitors =
+                    visitors.filter(visitor =>
+                        visitor.status === "Checked-In"
+                    );
+
+
+                renderCheckoutVisitors(
+                    checkoutVisitors
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Checkout loading error:",
+                    error
+                );
+
+
+                list.innerHTML = `
+                    <div
+                        style="
+                            padding:30px;
+                            text-align:center;
+                            color:#e74c3c;
+                        "
+                    >
+                        Unable to load visitors.
+                        <br><br>
+                        Make sure the backend server is running.
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+        /*
+        ==========================================================
+        DISPLAY VISITORS
+        ==========================================================
+        */
+
+        function renderCheckoutVisitors(visitors) {
+
+            const list =
+                document.getElementById(
+                    "checkoutVisitorList"
+                );
+
+
+            const count =
+                document.getElementById(
+                    "insideCount"
+                );
+
+
+            count.textContent =
+                `${visitors.length} Inside`;
+
+
+            if (visitors.length === 0) {
+
+                list.innerHTML = `
+                    <div
+                        style="
+                            padding:40px 20px;
+                            text-align:center;
+                            color:#888;
+                        "
+                    >
+                        <div
+                            style="
+                                font-size:40px;
+                                margin-bottom:10px;
+                            "
+                        >
+                            ✓
+                        </div>
+
+                        <strong>
+                            No visitors currently inside
+                        </strong>
+
+                        <p>
+                            Checked-in visitors will appear here.
+                        </p>
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            list.innerHTML = visitors.map(visitor => {
+
+                const initials =
+                    getInitials(visitor.name);
+
+
+                const checkinTime =
+                    formatTime(
+                        visitor.updatedAt ||
+                        visitor.createdAt
+                    );
+
+
+                return `
+                    <div
+                        class="checkout-visitor"
+                        onclick="selectVisitor('${visitor._id}')"
+                        data-name="${escapeHtml(visitor.name)}"
+                        data-phone="${escapeHtml(visitor.phone)}"
+                    >
+
+                        <div class="visitor-avatar">
+                            ${initials}
+                        </div>
+
+                        <div class="checkout-visitor-info">
+
+                            <strong>
+                                ${escapeHtml(visitor.name)}
+                            </strong>
+
+                            <span>
+                                📞 ${escapeHtml(visitor.phone)}
+                            </span>
+
+                        </div>
+
+                        <div class="checkout-visitor-time">
+
+                            <small>
+                                Checked in
+                            </small>
+
+                            <strong>
+                                ${checkinTime}
+                            </strong>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+
+        }
+
+
+        /*
+        ==========================================================
+        SELECT VISITOR
+        ==========================================================
+        */
+
+        function selectVisitor(visitorId) {
+
+            selectedVisitor =
+                checkoutVisitors.find(
+                    visitor =>
+                        visitor._id === visitorId
+                );
+
+
+            if (!selectedVisitor) {
+
+                alert(
+                    "Visitor information could not be found."
+                );
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "checkoutEmpty"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "checkoutDetails"
+            ).style.display = "block";
+
+
+            document.getElementById(
+                "selectedVisitorName"
+            ).textContent =
+                selectedVisitor.name || "--";
+
+
+            document.getElementById(
+                "selectedPhone"
+            ).textContent =
+                selectedVisitor.phone || "--";
+
+
+            document.getElementById(
+                "selectedHost"
+            ).textContent =
+                selectedVisitor.personToMeet || "--";
+
+
+            document.getElementById(
+                "selectedPurpose"
+            ).textContent =
+                selectedVisitor.purpose || "--";
+
+
+            document.getElementById(
+                "selectedCheckin"
+            ).textContent =
+                formatTime(
+                    selectedVisitor.updatedAt ||
+                    selectedVisitor.createdAt
+                );
+
+
+            document.getElementById(
+                "selectedAvatar"
+            ).textContent =
+                getInitials(
+                    selectedVisitor.name
+                );
+
+
+            document.getElementById(
+                "checkoutTime"
+            ).textContent = "--";
+
+
+            document.getElementById(
+                "confirmCheckoutBtn"
+            ).disabled = false;
+
+        }
+
+
+        /*
+        ==========================================================
+        CONFIRM CHECKOUT
+        ==========================================================
+        */
+
+        async function confirmCheckout() {
+
+            if (!selectedVisitor) {
+
+                alert(
+                    "Please select a visitor first."
+                );
+
+                return;
+
+            }
+
+
+            const confirmAction =
+                confirm(
+                    `Are you sure you want to check out ${selectedVisitor.name}?`
+                );
+
+
+            if (!confirmAction) {
+
+                return;
+
+            }
+
+
+            const button =
+                document.getElementById(
+                    "confirmCheckoutBtn"
+                );
+
+
+            try {
+
+                button.disabled = true;
+
+                button.textContent =
+                    "Checking out...";
+
+
+                const response =
+                    await fetch(
+                        `${CHECKOUT_API}/${selectedVisitor._id}/checkout`,
+                        {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            }
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Checkout failed"
+                    );
+
+                }
+
+
+                const now =
+                    new Date();
+
+
+                const time =
+                    now.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    });
+
+
+                document.getElementById(
+                    "checkoutTime"
+                ).textContent = time;
+
+
+                alert(
+                    `${selectedVisitor.name} checked out successfully at ${time}.`
+                );
+
+
+                /*
+                 * Reload the list so the visitor disappears
+                 * because their status is now Checked-Out.
+                 */
+
+                selectedVisitor = null;
+
+
+                document.getElementById(
+                    "checkoutDetails"
+                ).style.display = "none";
+
+
+                document.getElementById(
+                    "checkoutEmpty"
+                ).style.display = "block";
+
+
+                await loadCheckoutVisitors();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Checkout error:",
+                    error
+                );
+
+
+                alert(
+                    "Checkout failed: " +
+                    error.message
+                );
+
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Confirm Check-out →";
+
+            }
+
+        }
+
+
+        /*
+        ==========================================================
+        SEARCH
+        ==========================================================
+        */
+
+        function filterVisitors() {
+
+            const search =
+                document.getElementById(
+                    "visitorCheckoutSearch"
+                ).value
+                .toLowerCase()
+                .trim();
+
+
+            const filtered =
+                checkoutVisitors.filter(visitor => {
+
+                    const name =
+                        (visitor.name || "")
+                        .toLowerCase();
+
+                    const phone =
+                        (visitor.phone || "")
+                        .toLowerCase();
+
+
+                    return (
+                        name.includes(search) ||
+                        phone.includes(search)
+                    );
+
+                });
+
+
+            renderCheckoutVisitors(filtered);
+
+        }
+
+
+        /*
+        ==========================================================
+        HELPER FUNCTIONS
+        ==========================================================
+        */
+
+        function getInitials(name) {
+
+            if (!name) {
+
+                return "--";
+
+            }
+
+
+            return name
+                .trim()
+                .split(/\s+/)
+                .slice(0, 2)
+                .map(word =>
+                    word.charAt(0).toUpperCase()
+                )
+                .join("");
+
+        }
+
+
+        function formatTime(dateValue) {
+
+            if (!dateValue) {
+
+                return "--";
+
+            }
+
+
+            const date =
+                new Date(dateValue);
+
+
+            if (isNaN(date.getTime())) {
+
+                return "--";
+
+            }
+
+
+            return date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+        }
+
+
+        function escapeHtml(value) {
+
+            if (value === null ||
+                value === undefined) {
+
+                return "";
+
+            }
+
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /*
+        ==========================================================
+        SEARCH EVENTS
+        ==========================================================
+        */
+
+        document
+            .getElementById(
+                "visitorCheckoutSearch"
+            )
+            .addEventListener(
+                "input",
+                filterVisitors
+            );
+
+
+        document
+            .getElementById(
+                "checkoutSearch"
+            )
+            .addEventListener(
+                "input",
+                function () {
+
+                    document.getElementById(
+                        "visitorCheckoutSearch"
+                    ).value = this.value;
+
+                    filterVisitors();
+
+                }
+            );
+
+
+        /*
+        ==========================================================
+        INITIAL LOAD
+        ==========================================================
+        */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                loadCheckoutVisitors();
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
